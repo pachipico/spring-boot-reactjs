@@ -4,8 +4,8 @@
 <configuration>
     <typeAliases>
         
-<!--         <typeAlias type="com.jwtpractice.user.domain.User" alias="user"/>
-        <typeAlias type="com.jwtpractice.token.domain.RefreshToken" alias="token"/>
-        <typeAlias type="com.jwtpractice.board.domain.Board" alias="board"/>  -->
+        <typeAlias type="com.backend.user.domain.User" alias="user"/>
+        
+        <!-- <typeAlias type="com.backend.board.domain.Board" alias="board"/>   -->
     </typeAliases>
 </configuration>
