@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.user.mapper.UserMapper">
     <insert id="register" parameterType="user">
-        insert into user(email, name, nickName, password, address, siName) 
-        values(#{email}, #{name} ,#{nickName}, #{password}, #{address}, #{siName})
+        insert into user(email, name, nickName, password, address, siName, roles) 
+        values(#{email}, #{name} ,#{nickName}, #{password}, #{address}, #{siName}, "ROLE_USER")
     </insert>
     
     <select id="login" resultType="user">
@@ -70,6 +70,14 @@
     
     <update id="updateUserLastLoggedIn" parameterType="string">
         update user set lastLoggedIn = now() where email = #{email}
+    </update>
+    
+    <update id="updateUserPoint">
+        update user set point = (point + #{point}) where email = #{email}
+    </update>
+    
+    <update id="updateUserPopularity">
+        update user set popularity = (popularity + #{popularity}) where email = #{email}
     </update>
     
     <delete id="deleteUser" parameterType="string">

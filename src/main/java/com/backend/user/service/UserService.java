@@ -12,12 +12,12 @@ import com.backend.user.dto.UserSignupRequestDto;
 
 public interface UserService {
 	int register(UserSignupRequestDto userSignupRequestDto);
-	UserLoginResponseDto login(UserLoginRequestDto userLoginRequestDto);
 	UserResponseDto findByEmail(String email);
 	UserResponseDto findByName(String name);
 	List<UserResponseDto> findByNickName(String nickName);
 	List<UserResponseDto> findByLocation(String siName);
 	List<UserResponseDto> findAll();
-	int updateUser(UserModifyRequestDto userModifyRequestDto, String category);
+	int updateUserInfo(UserModifyRequestDto userModifyRequestDto, String category);
+	
 	int deleteUser(String email);
 }

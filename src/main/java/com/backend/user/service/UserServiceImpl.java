@@ -34,17 +34,6 @@ public class UserServiceImpl implements UserService {
 		return userMapper.register(userSignupRequestDto.toEntity());
 	}
 
-	@Override
-	@Transactional
-	public UserLoginResponseDto login(UserLoginRequestDto userLoginRequestDto) {
-		// 시큐리티 적용 후 비밀번호 인코딩/디코딩
-		if (userMapper.findByEmail(userLoginRequestDto.getEmail()) == null) {
-			throw new RuntimeException("해당 이메일의 유저가 존재하지 않습니다.");
-		}
-		return new UserLoginResponseDto(
-				userMapper.login(userLoginRequestDto.getEmail(), userLoginRequestDto.getPassword()));
-
-	}
 
 	@Override
 	@Transactional
@@ -84,17 +73,22 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public int updateUser(UserModifyRequestDto userModifyRequestDto, String category) {
+	public int updateUserInfo(UserModifyRequestDto userModifyRequestDto, String category) {
 
 		switch (category) {
 		case "nickName":
 			return userMapper.updateUserNickName(userModifyRequestDto.toEntity());
 		case "address":
+			
 			return userMapper.updateUserAddress(userModifyRequestDto.toEntity());
 		case "password":
 			return userMapper.updateUserPassword(userModifyRequestDto.toEntity());
 		case "profileImg":
 			return userMapper.updateUserProfileImg(userModifyRequestDto.toEntity());
+		case "point":
+			return userMapper.updateUserPoint(userModifyRequestDto.toEntity());
+		case "popularity":
+			return userMapper.updateUserPopularity(userModifyRequestDto.toEntity());
 		default:
 			return 0;
 		}

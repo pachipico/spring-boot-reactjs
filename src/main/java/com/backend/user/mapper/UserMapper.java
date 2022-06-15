@@ -23,5 +23,7 @@ public interface UserMapper {
 	int updateUserProfileImg(User user);
 	int updateUserPassword(User user);
 	int updateUserLastLoggedIn(String email);
+	int updateUserPoint(User user);
+	int updateUserPopularity(User user);
 	int deleteUser(String email);
 }

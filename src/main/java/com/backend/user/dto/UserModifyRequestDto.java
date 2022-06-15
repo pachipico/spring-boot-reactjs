@@ -18,9 +18,12 @@ public class UserModifyRequestDto {
 	private String siName;
 	private String profileImg;
 	private String password;
+	private String lastLoggedIn;
+	private int point;
+	private int popularity;
 
 	public User toEntity () {
-		return new User(email, password, null, nickName, address, siName);
+		return new User(email, password, nickName, profileImg, point, popularity, address, lastLoggedIn, siName);
 	}
 
 }

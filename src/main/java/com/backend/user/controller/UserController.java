@@ -1,5 +1,7 @@
 package com.backend.user.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,12 +11,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.backend.advice.exception.UserNotFoundCException;
 import com.backend.response.ResponseService;
 import com.backend.response.result.CommonResult;
 import com.backend.response.result.ListResult;
 import com.backend.response.result.SingleResult;
+import com.backend.security.service.SecurityService;
 import com.backend.user.dto.UserLoginRequestDto;
-import com.backend.user.dto.UserLoginResponseDto;
 import com.backend.user.dto.UserModifyRequestDto;
 import com.backend.user.dto.UserResponseDto;
 import com.backend.user.dto.UserSignupRequestDto;
@@ -30,40 +33,58 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 	private final UserService userService;
 	private final ResponseService responseService;
+	private final SecurityService securityService;
 	
-	@PostMapping("/user/signup")
+	@PostMapping("/signup")
 	public CommonResult signup (@RequestBody UserSignupRequestDto userSignupRequestDto) {
-		return userService.register(userSignupRequestDto) > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult();
+		return securityService.signup(userSignupRequestDto) > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult();
+	}
+	
+	@PostMapping("/login")
+	public CommonResult login(@RequestBody UserLoginRequestDto userLoginRequestDto){
+		String token = securityService.login(userLoginRequestDto);
+		return token == null ? responseService.getFailResult() : responseService.getSingleResult(token);
 	}
 	
 	@GetMapping("/users")
-	public ListResult<UserResponseDto> users(){
-		return responseService.getListResult(userService.findAll());
+	public ListResult<UserResponseDto> users() {
+		List<UserResponseDto> users = userService.findAll();
+		if(users.size() == 0 || users == null) throw new UserNotFoundCException();
+		else return responseService.getListResult(userService.findAll());
 	}
 	
 	@GetMapping("/user/email/{email}")
 	public SingleResult<UserResponseDto> findByEmail(@PathVariable("email") String email){
-		return responseService.getSingleResult(userService.findByEmail(email));
+		UserResponseDto user = userService.findByEmail(email);
+		if(user == null) throw new UserNotFoundCException();
+		else return responseService.getSingleResult(user);
 	}
 	
 	@GetMapping("/user/name/{name}")
 	public SingleResult<UserResponseDto> findByName(@PathVariable("name") String name){
-		return responseService.getSingleResult(userService.findByName(name));
+		UserResponseDto user = userService.findByName(name);
+		if(user == null) throw new UserNotFoundCException();
+		else return responseService.getSingleResult(user);
 	}
 	
-	@GetMapping("/user/nickName/{nickName}")
+	@GetMapping("/user/nickname/{nickName}")
 	public ListResult<UserResponseDto> findByNickName(@PathVariable("nickName") String nickName){
-		return responseService.getListResult(userService.findByNickName(nickName));
+		List<UserResponseDto> users = userService.findByNickName(nickName);
+		if(users.size() == 0 || users == null) throw new UserNotFoundCException();
+		else return responseService.getListResult(users);
 	}
 	
 	@GetMapping("/user/location/{siName}")
 	public ListResult<UserResponseDto> findByLocation(@PathVariable("siName") String siName){
-		return responseService.getListResult(userService.findByLocation(siName));
+		List<UserResponseDto> users = userService.findByLocation(siName);
+		if(users.size() == 0 || users == null) throw new UserNotFoundCException();
+		else return responseService.getListResult(users);
 	}
 	
 	@PutMapping("/user/modify/{category}")
-	public SingleResult<Integer> modify(@RequestBody UserModifyRequestDto userModifyRequestDto, @PathVariable("category") String category){
-		return responseService.getSingleResult(userService.updateUser(userModifyRequestDto, category));
+	public CommonResult modify(@RequestBody UserModifyRequestDto userModifyRequestDto, @PathVariable("category") String category){
+		int res = userService.updateUserInfo(userModifyRequestDto, category);
+		return res > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult();
 	}
 	
 	@DeleteMapping("/user/delete/{email}")

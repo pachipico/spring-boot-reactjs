@@ -13,30 +13,38 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Service
 public class ResponseService {
-	
-	public <T> SingleResult<T> getSingleResult(T data){
+
+	public <T> SingleResult<T> getSingleResult(T data) {
 		SingleResult<T> result = new SingleResult<>();
 		result.setData(data);
 		setSuccessResult(result);
 		return result;
 	}
-	
-	public <T> ListResult<T> getListResult(List<T> data){
+
+	public <T> ListResult<T> getListResult(List<T> data) {
 		ListResult<T> result = new ListResult<>();
 		result.setData(data);
 		setSuccessResult(result);
 		return result;
 	}
-	
+
 	public CommonResult getSuccessfulResult() {
 		CommonResult result = new CommonResult();
 		setSuccessResult(result);
 		return result;
 	}
-	
-	public CommonResult getFailResult()	{
+
+	public CommonResult getFailResult() {
 		CommonResult result = new CommonResult();
 		setFailResult(result);
+		return result;
+	}
+
+	public CommonResult getFailResult(int code, String msg) {
+		CommonResult result = new CommonResult();
+
+		result.setCode(code);
+		result.setMsg(msg);
 		return result;
 	}
 
@@ -45,7 +53,7 @@ public class ResponseService {
 		result.setCode(CommonResponse.SUCCESS.getCode());
 		result.setMsg(CommonResponse.SUCCESS.getMsg());
 	}
-	
+
 	public void setFailResult(CommonResult result) {
 		result.setSuccess(false);
 		result.setCode(CommonResponse.FAIL.getCode());
