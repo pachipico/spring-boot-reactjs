@@ -12,7 +12,7 @@ public interface UserMapper {
 	User login(String email, String password);
 	User findByEmail(String email);
 	int isEmailAvailable(String email);
-	int isNickNameAvailable(String nickName);
+	User isNickNameAvailable(String nickName);
 	User findByName(String name);
 	List<User> findByNickName(String nickName);
 	List<User> findByLocation(String siName);

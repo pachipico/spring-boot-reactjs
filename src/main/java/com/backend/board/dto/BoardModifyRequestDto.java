@@ -14,8 +14,9 @@ import lombok.ToString;
 public class BoardModifyRequestDto {
 	private String title;
 	private String content;
+	private String category;
 	
 	public Board toEntity () {
-		return new Board(title, content);
+		return new Board(this.title, this.content, this.category);
 	}
 }

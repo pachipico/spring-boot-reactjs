@@ -1,3 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="mappers.board.boardMapper"></mapper>
+<mapper namespace="com.backend.board.mapper.BoardMapper">
+
+    <insert id="register" parameterType="board">
+        insert into board(title, writer, content, siName, category) values(#{title}, #{writer}, #{content}, #{siName}, #{category})
+    </insert>
+    
+    <!-- 일반적인 제목, 작성자, 내용 정렬해서 검색 (orderBy가 null 이면 정확도순, desc나 asc가 있으면 작성일 기준으로 정렬)-->
+    <select id="findBoardListByQuery" resultType="board">
+        select b.bid, title, writer, regAt, modAt, hit, category, count(bl.bId) as likeCnt
+        from board b left join boardLike bl on b.bId = bl.bId 
+        where #{field} like "%${query}%" and siName = #{siName} and category like "%${category}%"
+        <if test="orderBy != null || orderBy != ''">
+            order by regAt #{orderBy}
+        </if>
+        limit #{start}, 10
+    </select>
+    
+    <!-- 게시판 상단에 인기 게시글 5개 -->
+    <select id="findPopularBoardList" resultType="board">
+        select b.bId , title, writer, siName, category ,hit,  COUNT(bl.bid) as likeCnt
+		from board b left join boardLike bl on b.bId = bl.bid 
+		where siName = #{siName} and category like "%${category}%"
+		GROUP by b.bid
+		order by count(bl.bid) desc
+		limit 5;
+    </select>
+    
+   <!-- 유저 디테일에 보여질 해당 유저의 게시글 -->
+    <select id="findBoardListByUser" resultType="board">
+        select b.bId, title, writer, category, hit, count(bl.bId) as likeCnt
+        from board b left join boardLike bl on b.bId = bl.bId
+        where writer = #{email} and siName = #{siName}
+    </select>
+    
+    <!-- 게시글 한개 조회 -->
+    <select id="findBoardDetail" resultType="board">
+        select b.*, count(bl.bId) as likeCnt
+        from board b left join boardLike bl on b.bId = bl.bId
+        where bId = #{bId}
+    </select>
+    
+   <!-- 게시글 조회수 올리기 -->
+   <update id="updateBoardHit">
+       update board set hit = (hit + 1) from board where bId = #{bId}
+   </update>
+   
+   <update id="updateBoard" parameterType="board">
+        update board set title = #{title}, content = #{content}, category = #{category}, modAt = now() where bId = #{bId}
+   </update>
+   
+   <delete id="deleteBoard">
+        delete from board where bId = #{bId}
+   </delete>
+    
+</mapper>

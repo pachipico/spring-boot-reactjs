@@ -17,6 +17,8 @@ public class BoardDetailResponseDto {
 	private String content;
 	private String regAt;
 	private String modAt;
+	private String category;
+	private int likeCnt;
 
 	public BoardDetailResponseDto(Board board) {
 		this.bId = board.getBId();
@@ -27,5 +29,7 @@ public class BoardDetailResponseDto {
 		this.content = board.getContent();
 		this.regAt = board.getRegAt();
 		this.modAt = board.getModAt();
+		this.category = board.getCategory();
+		this.likeCnt = board.getLikeCnt();
 	}
 }

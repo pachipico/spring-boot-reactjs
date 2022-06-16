@@ -18,8 +18,10 @@ public class BoardRegisterRequestDto {
 	private String title;
 	private String writer;
 	private String content;
+	private String category;
+	private String siName;
 	
 	public Board toEntity () {
-		return new Board(this.title, this.writer, this.content);
+		return new Board(this.title, this.writer, this.content, this.category, this.siName);
 	}
 }

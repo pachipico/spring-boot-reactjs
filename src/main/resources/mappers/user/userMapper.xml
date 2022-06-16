@@ -1,87 +1,85 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.backend.user.mapper.UserMapper">
-    <insert id="register" parameterType="user">
-        insert into user(email, name, nickName, password, address, siName, roles) 
-        values(#{email}, #{name} ,#{nickName}, #{password}, #{address}, #{siName}, "ROLE_USER")
-    </insert>
-    
-    <select id="login" resultType="user">
-        select * from user where email = #{email} and password = #{password}
-    </select>
+	<insert id="register" parameterType="user">
+		insert into user(email, name, nickName, password, address, siName, roles)
+		values(#{email}, #{name} ,#{nickName}, #{password}, #{address},
+		#{siName}, "ROLE_USER")
+	</insert>
 
-    <select id="findByEmail" resultType="user">
-        select * from user where email = #{email}
-    </select>
-    
-    <select id="isEmailAvailable" resultType="int">
-        select
-            case
-                when count(email) = 0 then 1
-                when count(email) = 1 then 0
-            end
-            from user where email = #{email}
-    </select>
-    
-    <select id="isNickNameAvailable">
-        select 
-            case
-                when count(email) = 0 then 1
-                when count(email) = 1 then 0
-            end
-            from user where nickName = #{nickName}
-    </select>
-    
-    <select id="findByName" resultType="user">
-        select * from user where name = #{name}
-    </select>
-    
-    <select id="findByNickName" resultType="user">
-        select * from user where nickName like "%${nickName}%"
-    </select>
-    
-    <select id="findByLocation" resultType="user">
-        select * from user where siName = #{siName}
-    </select>
-    
-    <select id="findAll" resultType="user">
-        select * from user where email is not null
-    </select>
-    
-    <select id="findLastSaved" resultType="user">
-        select * from user order by regAt desc limit 1
-    </select>
-    
-    <update id="updateUserNickName" parameterType="user">
-        update user set nickName = #{nickName} where email = #{email}
-    </update>
-    
-    <update id="updateUserAddress" parameterType="user">
-        update user set address = #{address}, siName = #{siName} where email = #{email}
-    </update>
-    
-    <update id="updateUserProfileImg" parameterType="user">
-        update user set profileImg = #{profileImg} where email = #{email}
-    </update>
-    
-    <update id="updateUserPassword" parameterType="user">
-        update user set password = #{password} where email = #{email}
-    </update>
-    
-    <update id="updateUserLastLoggedIn" parameterType="string">
-        update user set lastLoggedIn = now() where email = #{email}
-    </update>
-    
-    <update id="updateUserPoint">
-        update user set point = (point + #{point}) where email = #{email}
-    </update>
-    
-    <update id="updateUserPopularity">
-        update user set popularity = (popularity + #{popularity}) where email = #{email}
-    </update>
-    
-    <delete id="deleteUser" parameterType="string">
-        delete from user where email = #{email} 
-    </delete>
-    
+	<select id="login" resultType="user">
+		select * from user where email = #{email} and password = #{password}
+	</select>
+
+	<select id="findByEmail" resultType="user">
+		select * from user where email = #{email}
+	</select>
+
+	<select id="isEmailAvailable" resultType="int">
+		select
+		case
+		when count(email) = 0 then 1
+		when count(email) = 1 then 0
+		end
+		from user where email = #{email}
+	</select>
+
+	<select id="isNickNameAvailable" resultType="user">
+		select * from user where nickName = #{nickName}
+	</select>
+
+	<select id="findByName" resultType="user">
+		select * from user where name = #{name}
+	</select>
+
+	<select id="findByNickName" resultType="user">
+		select * from user where nickName like "%${nickName}%"
+	</select>
+
+	<select id="findByLocation" resultType="user">
+		select * from user where siName = #{siName}
+	</select>
+
+	<select id="findAll" resultType="user">
+		select * from user where email is not null
+	</select>
+
+	<select id="findLastSaved" resultType="user">
+		select * from user order by regAt desc limit 1
+	</select>
+
+	<update id="updateUserNickName" parameterType="user">
+		update user set nickName = #{nickName} where email = #{email}
+	</update>
+
+	<update id="updateUserAddress" parameterType="user">
+		update user set address = #{address}, siName = #{siName} where email =
+		#{email}
+	</update>
+
+	<update id="updateUserProfileImg" parameterType="user">
+		update user set profileImg = #{profileImg} where email = #{email}
+	</update>
+
+	<update id="updateUserPassword" parameterType="user">
+		update user set password = #{password} where email = #{email}
+	</update>
+
+	<update id="updateUserLastLoggedIn" parameterType="string">
+		update user set lastLoggedIn = now() where email = #{email}
+	</update>
+
+	<update id="updateUserPoint">
+		update user set point = (point + #{point}) where email = #{email}
+	</update>
+
+	<update id="updateUserPopularity">
+		update user set popularity = (popularity + #{popularity}) where email =
+		#{email}
+	</update>
+
+	<delete id="deleteUser" parameterType="string">
+		delete from user where email = #{email}
+	</delete>
+
 </mapper>

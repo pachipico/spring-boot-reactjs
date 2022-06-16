@@ -49,8 +49,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.authorizeRequests()
 		.antMatchers("/api/login", "/api/signup").permitAll()
+		.antMatchers("/api/**").hasRole("USER")
 		.antMatchers(HttpMethod.GET, "/exception/**").permitAll()
-		.anyRequest().hasRole("USER")
 		.and()
 		.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
 		.and()
@@ -62,6 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		
+		web.ignoring().antMatchers("/static/**", "/");
 	}
 }

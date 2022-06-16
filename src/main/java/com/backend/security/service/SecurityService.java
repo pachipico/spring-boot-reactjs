@@ -2,6 +2,7 @@ package com.backend.security.service;
 
 import java.util.Arrays;
 
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.security.jwt.JwtProvider;
 import com.backend.user.domain.User;
 import com.backend.user.dto.UserLoginRequestDto;
+import com.backend.user.dto.UserReissueDto;
 import com.backend.user.dto.UserSignupRequestDto;
 import com.backend.user.mapper.UserMapper;
 
@@ -36,8 +38,21 @@ public class SecurityService {
 
 	@Transactional
 	public int signup(UserSignupRequestDto userSignupRequestDto) {
+		if(userMapper.findByEmail(userSignupRequestDto.getEmail()) != null) return -2;
+		if(userMapper.isNickNameAvailable(userSignupRequestDto.getNickName()) != null) return -1; 
 		userSignupRequestDto.setPassword(encoder.encode(userSignupRequestDto.getPassword()));
 		return userMapper.register(userSignupRequestDto.toEntity());
+		
+	}
+	
+	@Transactional
+	public UserReissueDto reissue(String token) {
+		UserReissueDto userReissueDto = null;
+		if(jwtProvider.validateToken(token)) {
+			Authentication authentication = jwtProvider.getAuthentication(token);
+			userReissueDto = new UserReissueDto(userMapper.findByEmail(authentication.getName()), token);
+		}
+		return userReissueDto;
 	}
 	
 }

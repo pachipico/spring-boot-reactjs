@@ -6,9 +6,11 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.response.ResponseService;
+import com.backend.response.result.CommonResult;
 import com.backend.user.domain.User;
 import com.backend.user.dto.UserLoginRequestDto;
-import com.backend.user.dto.UserLoginResponseDto;
+import com.backend.user.dto.UserReissueDto;
 import com.backend.user.dto.UserModifyRequestDto;
 import com.backend.user.dto.UserResponseDto;
 import com.backend.user.dto.UserSignupRequestDto;
@@ -23,7 +25,8 @@ import lombok.extern.slf4j.Slf4j;
 public class UserServiceImpl implements UserService {
 
 	private final UserMapper userMapper;
-
+	private final ResponseService responseService;
+	
 	// 시큐리티 적용 후 비밀번호 인코딩/디코딩
 	// private final PasswordEncoder passwordEncoder;
 
@@ -41,6 +44,7 @@ public class UserServiceImpl implements UserService {
 
 		return new UserResponseDto(userMapper.findByEmail(email));
 	}
+	
 
 	@Override
 	@Transactional
