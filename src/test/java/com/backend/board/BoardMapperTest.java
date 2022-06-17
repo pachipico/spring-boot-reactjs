@@ -18,8 +18,6 @@ public class BoardMapperTest {
 	@Test
 	public void register() {
 		Board board = new Board("testTitle", "123@123.com", "testContent", "질문", "용인");
-		mapper.register(board);
-		
-		
-	}
+		mapper.register(board); 
+	} 
 }
