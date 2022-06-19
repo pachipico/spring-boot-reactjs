@@ -10,9 +10,10 @@
     <select id="findBoardListByQuery" resultType="board">
         select b.bid, title, writer, regAt, modAt, hit, category, count(bl.bId) as likeCnt
         from board b left join boardLike bl on b.bId = bl.bId 
-        where #{field} like "%${query}%" and siName = #{siName} and category like "%${category}%"
-        <if test="orderBy != null || orderBy != ''">
-            order by regAt #{orderBy}
+        where ${field} like "%${query}%" and siName = #{siName} and category like '%${category}%'
+        group by b.bId
+        <if test='orderBy != ""'>
+            order by regAt ${orderBy}
         </if>
         limit #{start}, 10
     </select>
@@ -29,21 +30,22 @@
     
    <!-- 유저 디테일에 보여질 해당 유저의 게시글 -->
     <select id="findBoardListByUser" resultType="board">
-        select b.bId, title, writer, category, hit, count(bl.bId) as likeCnt
+        select b.bId, title, writer, siName ,regAt, modAt,  category, hit, count(bl.bId) as likeCnt
         from board b left join boardLike bl on b.bId = bl.bId
-        where writer = #{email} and siName = #{siName}
+        where writer = #{email} 
+        group by b.bId
     </select>
     
     <!-- 게시글 한개 조회 -->
     <select id="findBoardDetail" resultType="board">
         select b.*, count(bl.bId) as likeCnt
         from board b left join boardLike bl on b.bId = bl.bId
-        where bId = #{bId}
+        where b.bId = #{bId}
     </select>
     
    <!-- 게시글 조회수 올리기 -->
    <update id="updateBoardHit">
-       update board set hit = (hit + 1) from board where bId = #{bId}
+       update board set hit = (hit + 1) where bId = #{bId}
    </update>
    
    <update id="updateBoard" parameterType="board">
@@ -52,6 +54,16 @@
    
    <delete id="deleteBoard">
         delete from board where bId = #{bId}
+   </delete>
+   
+   <!-- 게시글 좋아요 -->
+   <insert id="likeBoard">
+        insert into boardLike(bId, email) values(#{bId}, #{email})
+   </insert>
+   
+   <!-- 게시글 좋아요 취소 -->
+   <delete id="unlikeBoard">
+        delete from boardLike where bId = #{bId} and email = #{email}
    </delete>
     
 </mapper>

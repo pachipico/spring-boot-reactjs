@@ -3,6 +3,7 @@ package com.backend.user.service;
 import java.util.List;
 
 import com.backend.user.domain.User;
+import com.backend.user.dto.UserDetailsDto;
 import com.backend.user.dto.UserLoginRequestDto;
 import com.backend.user.dto.UserReissueDto;
 import com.backend.user.dto.UserModifyRequestDto;
@@ -14,6 +15,7 @@ public interface UserService {
 	int register(UserSignupRequestDto userSignupRequestDto);
 	UserResponseDto findByEmail(String email);
 	UserResponseDto findByName(String name);
+	UserDetailsDto findUserDetails(String email);
 	List<UserResponseDto> findByNickName(String nickName);
 	List<UserResponseDto> findByLocation(String siName);
 	List<UserResponseDto> findAll();

@@ -21,6 +21,7 @@ import com.backend.response.result.ListResult;
 import com.backend.response.result.SingleResult;
 import com.backend.security.CustomAccessDeniedHandler;
 import com.backend.security.service.SecurityService;
+import com.backend.user.dto.UserDetailsDto;
 import com.backend.user.dto.UserLoginRequestDto;
 import com.backend.user.dto.UserModifyRequestDto;
 import com.backend.user.dto.UserReissueDto;
@@ -72,12 +73,11 @@ public class UserController {
 	}
 
 	@GetMapping("/user/email/{email}")
-	public SingleResult<UserResponseDto> findByEmail(@PathVariable("email") String email) {
-		UserResponseDto user = userService.findByEmail(email);
-		if (user == null)
+	public SingleResult<UserDetailsDto> findByEmail(@PathVariable("email") String email) {
+		if (userService.findByEmail(email) == null)
 			throw new UserNotFoundCException();
 		else
-			return responseService.getSingleResult(user);
+			return responseService.getSingleResult(userService.findUserDetails(email));
 	}
 
 	@GetMapping("/user/name/{name}")
