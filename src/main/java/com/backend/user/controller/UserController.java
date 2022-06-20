@@ -119,4 +119,10 @@ public class UserController {
 		return userService.deleteUser(email) > 0 ? responseService.getSuccessfulResult()
 				: responseService.getFailResult();
 	}
+	
+	@GetMapping("/{email}/liked")
+	public ListResult<Long> userLikedBId(@PathVariable("email") String email){
+		log.debug("???{}", email);
+		return responseService.getListResult(userService.getUserLikedBoardBId(email));
+	}
 }

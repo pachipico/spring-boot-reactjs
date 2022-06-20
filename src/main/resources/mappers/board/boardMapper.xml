@@ -6,23 +6,40 @@
         insert into board(title, writer, content, siName, category) values(#{title}, #{writer}, #{content}, #{siName}, #{category})
     </insert>
     
+    <!-- 시 목록 가져오기 -->
+    <select id="findAllSi" resultType="si">
+        select d.doId , d.doName , s.siName 
+		from do d left join si s on d.doId = s.doId
+		where s.siName is not null;
+    </select>
+    
     <!-- 일반적인 제목, 작성자, 내용 정렬해서 검색 (orderBy가 null 이면 정확도순, desc나 asc가 있으면 작성일 기준으로 정렬)-->
     <select id="findBoardListByQuery" resultType="board">
-        select b.bid, title, writer, regAt, modAt, hit, category, count(bl.bId) as likeCnt
+        select b.bId, title, writer,siName, regAt, modAt, hit, category, count(bl.bId) as likeCnt
         from board b left join boardLike bl on b.bId = bl.bId 
-        where ${field} like "%${query}%" and siName = #{siName} and category like '%${category}%'
+        where 
+        <if test="query != null">
+        ${field} like "%${query}%" and 
+        </if>
+        siName = #{siName} 
+        <if test='category != null'>
+        and category like '%${category}%'
+        </if>
         group by b.bId
-        <if test='orderBy != ""'>
+        <if test='orderBy != null '>
             order by regAt ${orderBy}
         </if>
         limit #{start}, 10
     </select>
     
     <!-- 게시판 상단에 인기 게시글 5개 -->
-    <select id="findPopularBoardList" resultType="board">
-        select b.bId , title, writer, siName, category ,hit,  COUNT(bl.bid) as likeCnt
+    <select id="findPopularBoardList" resultType="board" parameterType="query">
+        select b.bId , title, writer, siName, category ,regAt, modAt,hit,  COUNT(bl.bid) as likeCnt
 		from board b left join boardLike bl on b.bId = bl.bid 
-		where siName = #{siName} and category like "%${category}%"
+		where siName = #{siName}
+		<if test='category != null'>
+		and category like "%${category}%"
+		</if> 
 		GROUP by b.bid
 		order by count(bl.bid) desc
 		limit 5;
@@ -49,7 +66,17 @@
    </update>
    
    <update id="updateBoard" parameterType="board">
-        update board set title = #{title}, content = #{content}, category = #{category}, modAt = now() where bId = #{bId}
+        update board set 
+        <if test='title != null'>
+        title = #{title}, 
+        </if>
+        <if test="content != null">
+        content = #{content}, 
+        </if>
+        <if test="category != null">
+        category = #{category}, 
+        </if>
+        modAt = now() where bId = #{bId}
    </update>
    
    <delete id="deleteBoard">

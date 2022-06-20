@@ -1,17 +1,19 @@
 package com.backend.codewars;
 
 import java.util.Arrays;
-import java.util.List;
+import java.util.stream.Collectors;
 
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Answer {
-	public static String highAndLow(String numbers) {
-		List<String> sorted = Arrays.asList(numbers.split(" "));
-		sorted.sort((a, b) -> Integer.parseInt(a) - Integer.parseInt(b));
+	public boolean check(String sentence) {
+		String str = "abcdefghijklmnopqrstuvwxyz";
+		String res = String.join("",Arrays.asList(str.split("")).stream()
+				.filter(v -> !Arrays.asList(sentence.split("")).stream().map(String::toLowerCase).collect(Collectors.toList()).contains(v.toLowerCase())).collect(Collectors.toList()));
 		
-		return sorted.get(0) + " " + sorted.get(sorted.size() -1);
+		System.out.println(res);
+		return str.length() == 0 ? true : false;
 	}
 
 }

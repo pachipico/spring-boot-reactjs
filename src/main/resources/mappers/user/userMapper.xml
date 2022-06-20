@@ -82,4 +82,7 @@
 		delete from user where email = #{email}
 	</delete>
 
+    <select id="findUserLikedBoardBId" resultType="long">
+        select bId from boardLike where email = #{email}
+    </select>
 </mapper>

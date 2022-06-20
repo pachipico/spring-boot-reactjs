@@ -43,11 +43,13 @@ public class Board {
 
 	/**
 	 * 글 수정에 사용될 생성자.
+	 * @param bId
 	 * @param title
 	 * @param content
 	 * @param category
 	 */
-	public Board(String title, String content, String category) {
+	public Board(Long bId ,String title, String content, String category) {
+		this.bId = bId;
 		this.title = title;
 		this.content = content;
 		this.category = category;

@@ -119,4 +119,11 @@ public class UserServiceImpl implements UserService {
 		return userMapper.deleteUser(email);
 	}
 
+	@Override
+	@Transactional
+	public List<Long> getUserLikedBoardBId(String email) {
+		log.debug("????????{}", userMapper.findUserLikedBoardBId(email));
+		return userMapper.findUserLikedBoardBId(email);
+	}
+
 }

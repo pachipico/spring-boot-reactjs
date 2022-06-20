@@ -26,4 +26,5 @@ public interface UserMapper {
 	int updateUserPoint(User user);
 	int updateUserPopularity(User user);
 	int deleteUser(String email);
+	List<Long> findUserLikedBoardBId(String email);
 }

@@ -22,4 +22,5 @@ public interface UserService {
 	int updateUserInfo(UserModifyRequestDto userModifyRequestDto, String category);
 	
 	int deleteUser(String email);
+	List<Long> getUserLikedBoardBId(String email);
 }

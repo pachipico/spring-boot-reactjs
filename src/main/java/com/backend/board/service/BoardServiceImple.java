@@ -7,12 +7,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.backend.board.dto.BoardDetailResponseDto;
+import com.backend.board.dto.BoardLikeDto;
 import com.backend.board.dto.BoardListResponseDto;
 import com.backend.board.dto.BoardModifyRequestDto;
+import com.backend.board.dto.BoardQuery;
 import com.backend.board.dto.BoardRegisterRequestDto;
+import com.backend.board.dto.Si;
 import com.backend.board.mapper.BoardMapper;
 import com.backend.response.ResponseService;
-import com.backend.response.result.ListResult;
 import com.backend.response.result.SingleResult;
 
 import lombok.RequiredArgsConstructor;
@@ -34,28 +36,26 @@ public class BoardServiceImple implements BoardService {
 
 	@Transactional
 	@Override
-	public ListResult<BoardListResponseDto> findBoardListByQuery(String field, String query, String siName,
-			String category, String orderBy, int start) {
-
-		return responseService
-				.getListResult(boardMapper.findBoardListByQuery(field, query, siName, category, orderBy, start).stream()
-						.map(v -> new BoardListResponseDto(v)).collect(Collectors.toList()));
+	public List<BoardListResponseDto> findBoardListByQuery(BoardQuery boardQuery) {
+		
+		return boardMapper.findBoardListByQuery(boardQuery).stream()
+						.map(v -> new BoardListResponseDto(v)).collect(Collectors.toList());
 	}
 
 	@Transactional
 	@Override
-	public ListResult<BoardListResponseDto> findPopularBoardList(String siName, String category) {
+	public List<BoardListResponseDto> findPopularBoardList(String siName, String category) {
 
-		return responseService.getListResult(boardMapper.findPopularBoardList(siName, category).stream()
-				.map(v -> new BoardListResponseDto(v)).collect(Collectors.toList()));
+		return boardMapper.findPopularBoardList(siName, category).stream()
+				.map(v -> new BoardListResponseDto(v)).collect(Collectors.toList());
 	}
 
 	@Transactional
 	@Override
-	public SingleResult<BoardDetailResponseDto> findBoardByBId(Long bId) {
+	public BoardDetailResponseDto findBoardByBId(Long bId) {
 		boardMapper.updateBoardHit(bId);
 
-		return responseService.getSingleResult(new BoardDetailResponseDto(boardMapper.findBoardDetail(bId)));
+		return new BoardDetailResponseDto(boardMapper.findBoardDetail(bId));
 	}
 
 	@Transactional
@@ -72,14 +72,20 @@ public class BoardServiceImple implements BoardService {
 
 	@Transactional
 	@Override
-	public void likeBoard(Long bId, String email) {
-		boardMapper.likeBoard(bId, email);
+	public void likeBoard(BoardLikeDto boardLikeDto) {
+		boardMapper.likeBoard(boardLikeDto.getBId(), boardLikeDto.getEmail());
 	}
 
 	@Transactional
 	@Override
-	public void unlikeBoard(Long bId, String email) {
-		boardMapper.unlikeBoard(bId, email);
+	public void unlikeBoard(BoardLikeDto boardLikeDto) {
+		boardMapper.unlikeBoard(boardLikeDto.getBId(), boardLikeDto.getEmail());
+	}
+
+	@Override
+	public List<Si> findAllSi() {
+		
+		return boardMapper.findAllSi();
 	}
 
 }

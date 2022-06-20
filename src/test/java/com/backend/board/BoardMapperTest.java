@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.backend.board.domain.Board;
+import com.backend.board.dto.BoardQuery;
 import com.backend.board.mapper.BoardMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class BoardMapperTest {
 
 	@Test
 	public void findList() {
-		List<Board> list = mapper.findBoardListByQuery("content", "", "용인", "", "", 0);
+		List<Board> list = mapper.findBoardListByQuery(new BoardQuery("content", "", "용인", "", "", 0));
 		for(Board b : list) {
 			System.out.println(b);
 		}
