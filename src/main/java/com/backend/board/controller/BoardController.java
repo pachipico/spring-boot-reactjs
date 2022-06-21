@@ -58,12 +58,26 @@ public class BoardController {
 		List<BoardListResponseDto> boardList = boardService.findPopularBoardList(siName, category);
 		return responseService.getListResult(boardList);
 	}
+
+	@GetMapping("/{bId}/next")
+	public SingleResult<Long> next(@PathVariable("bId") Long bId) {
+		Long id = boardService.findNextBId(bId);
+		log.debug(" next bId >>>>>>>>>>> {}", id);
+		return responseService.getSingleResult(id);
+	}
+
+	@GetMapping("/{bId}/prev")
+	public SingleResult<Long> prev(@PathVariable("bId") Long bId) {
+
+		return responseService.getSingleResult(boardService.findPrevBId(bId));
+	}
 	
 	@GetMapping("/{bId}")
 	public SingleResult<BoardDetailResponseDto> detail(@PathVariable("bId") Long bId){
 		BoardDetailResponseDto board = boardService.findBoardByBId(bId);
 		return responseService.getSingleResult(board);
 	}
+	
 	
 	@PostMapping("/like")
 	public CommonResult like(@RequestBody BoardLikeDto boardLikeDto) {

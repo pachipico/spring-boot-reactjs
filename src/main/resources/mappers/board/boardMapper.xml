@@ -26,15 +26,15 @@
         and category like '%${category}%'
         </if>
         group by b.bId
-        <if test='orderBy != null '>
-            order by regAt ${orderBy}
-        </if>
+        
+        order by regAt ${orderBy}
+        
         limit #{start}, #{cnt}
     </select>
     
     <!-- 해당 쿼리에 맞는 총 게시글 개수 -->
     <select id="findBoardCntByQuery" resultType="int">
-        select count(bId) 
+        select count(bId)
         from board
         where 
         siName = #{siName} 
@@ -44,6 +44,7 @@
         <if test='category != null'>
         and category like '%${category}%'
         </if>
+        
     </select>
     
     <!-- 게시판 상단에 인기 게시글 5개 -->
@@ -72,6 +73,15 @@
         select b.*, count(bl.bId) as likeCnt
         from board b left join boardLike bl on b.bId = bl.bId
         where b.bId = #{bId}
+        group by b.bId
+    </select>
+    
+    <select id="findNextBId" resultType="long">
+        select b.bId from board b left join boardLike bl on b.bId = bl.bId where b.bId > 10 limit 1 
+    </select>
+    
+    <select id="findPrevBId" resultType="long">
+        select b.bId from board b left join boardLike bl on b.bId = bl.bId  <![CDATA[where b.bId < 10]]> order by bId desc limit 1
     </select>
     
    <!-- 게시글 조회수 올리기 -->

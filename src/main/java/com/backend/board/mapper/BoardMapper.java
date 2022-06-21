@@ -16,6 +16,8 @@ public interface BoardMapper {
 	List<Board> findPopularBoardList(String siName, String category);
 	List<Board> findBoardListByUser(String email);
 	Board findBoardDetail(Long bId);
+	Long findNextBId(Long bId);
+	Long findPrevBId(Long bId);
 	void updateBoardHit(Long bId);
 	void updateBoard(Board board);
 	void deleteBoard(Long bId);

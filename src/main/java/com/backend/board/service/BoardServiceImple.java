@@ -64,6 +64,20 @@ public class BoardServiceImple implements BoardService {
 
 		return new BoardDetailResponseDto(boardMapper.findBoardDetail(bId));
 	}
+	
+	@Transactional
+	@Override
+	public Long findNextBId(Long bId) {
+		
+		return boardMapper.findNextBId(bId);
+	}
+
+	@Transactional
+	@Override
+	public Long findPrevBId(Long bId) {
+		
+		return boardMapper.findPrevBId(bId);
+	}
 
 	@Transactional
 	@Override
@@ -94,6 +108,8 @@ public class BoardServiceImple implements BoardService {
 		
 		return boardMapper.findAllSi();
 	}
+
+	
 
 
 }
