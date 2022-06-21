@@ -44,10 +44,13 @@ public class BoardController {
 		return responseService.getSuccessfulResult();
 	}
 
-	@GetMapping("")
-	public ListResult<BoardListResponseDto> getBoardList(@RequestBody BoardQuery query) {
+	@GetMapping("list")
+	public ListResult<BoardListResponseDto> getBoardList(BoardQuery query) {
 		List<BoardListResponseDto> boardList = boardService.findBoardListByQuery(query);
-		return responseService.getListResult(boardList);
+		int totalCnt = boardService.findBoardCntByQuery(query);
+		ListResult<BoardListResponseDto> res = responseService.getListResult(boardList);
+		res.setTotalCnt(totalCnt);
+		return res;
 	}
 	
 	@GetMapping(value = {"/popular/{siName}","/popular/{siName}/{category}"})

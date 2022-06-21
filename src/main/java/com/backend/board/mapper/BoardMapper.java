@@ -12,6 +12,7 @@ import com.backend.board.dto.Si;
 public interface BoardMapper {
 	int register(Board board);
 	List<Board> findBoardListByQuery(BoardQuery boardQuery);
+	int findBoardCntByQuery(BoardQuery boardQuery);
 	List<Board> findPopularBoardList(String siName, String category);
 	List<Board> findBoardListByUser(String email);
 	Board findBoardDetail(Long bId);
@@ -21,4 +22,5 @@ public interface BoardMapper {
 	void likeBoard(Long bId, String email);
 	void unlikeBoard(Long bId, String email);
 	List<Si> findAllSi();
+	
 }

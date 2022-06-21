@@ -26,7 +26,7 @@ public class BoardMapperTest {
 
 	@Test
 	public void findList() {
-		List<Board> list = mapper.findBoardListByQuery(new BoardQuery("content", "", "용인", "", "", 0));
+		List<Board> list = mapper.findBoardListByQuery(new BoardQuery("content", "", "용인", "", "", 0, 15));
 		for(Board b : list) {
 			System.out.println(b);
 		}

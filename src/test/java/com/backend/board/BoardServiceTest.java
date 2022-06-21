@@ -20,10 +20,10 @@ public class BoardServiceTest {
 
 	@Test
 	public void register() {
-		BoardRegisterRequestDto board = new BoardRegisterRequestDto("test title", "aaa@aaa.com",
-				"this is the content of test board", "기타", "서울");
-		boardService.registerBoard(board);
-		boardService.findBoardListByQuery(new BoardQuery("title", "", "서울", "기타", "", 0));
+		
+		for(int i = 0; i<= 100; i ++) {
+			boardService.registerBoard(new BoardRegisterRequestDto("test title" + i, "123@123.com", "this is test content number" + i, "기타", "서울"));
+		}
 	}
 
 	@Test
@@ -36,13 +36,13 @@ public class BoardServiceTest {
 		BoardModifyRequestDto boardModifyRequestDto = new BoardModifyRequestDto(10L, "modified title",
 				"this is modified content.", "기타");
 		boardService.updateBoard(boardModifyRequestDto);
-		boardService.findBoardListByQuery(new BoardQuery("title", "", "서울", "", "", 0));
+		boardService.findBoardListByQuery(new BoardQuery("title", "", "서울", "", "", 0, 15));
 	}
 
 	@Test
 	public void deleteBoard() {
 		boardService.deleteBoard(8L);
-		boardService.findBoardListByQuery(new BoardQuery("title", "", "서울", "", "", 0));
+		boardService.findBoardListByQuery(new BoardQuery("title", "", "서울", "", "", 0, 15));
 	}
 	
 	@Test

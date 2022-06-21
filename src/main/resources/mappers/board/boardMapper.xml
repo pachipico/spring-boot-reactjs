@@ -15,13 +15,13 @@
     
     <!-- 일반적인 제목, 작성자, 내용 정렬해서 검색 (orderBy가 null 이면 정확도순, desc나 asc가 있으면 작성일 기준으로 정렬)-->
     <select id="findBoardListByQuery" resultType="board">
-        select b.bId, title, writer,siName, regAt, modAt, hit, category, count(bl.bId) as likeCnt
+        select b.bId, title, writer,siName, regAt, modAt, hit, category, count(bl.bId) as likeCnt 
         from board b left join boardLike bl on b.bId = bl.bId 
         where 
-        <if test="query != null">
-        ${field} like "%${query}%" and 
-        </if>
         siName = #{siName} 
+        <if test="query != null">
+        and ${field} like "%${query}%"  
+        </if>
         <if test='category != null'>
         and category like '%${category}%'
         </if>
@@ -29,7 +29,21 @@
         <if test='orderBy != null '>
             order by regAt ${orderBy}
         </if>
-        limit #{start}, 10
+        limit #{start}, #{cnt}
+    </select>
+    
+    <!-- 해당 쿼리에 맞는 총 게시글 개수 -->
+    <select id="findBoardCntByQuery" resultType="int">
+        select count(bId) 
+        from board
+        where 
+        siName = #{siName} 
+        <if test="query != null">
+        and ${field} like "%${query}%" 
+        </if>
+        <if test='category != null'>
+        and category like '%${category}%'
+        </if>
     </select>
     
     <!-- 게시판 상단에 인기 게시글 5개 -->

@@ -20,4 +20,5 @@ public class BoardQuery {
 	private String category;
 	private String orderBy;
 	private int start;
+	private int cnt;
 }

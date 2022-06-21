@@ -26,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardServiceImple implements BoardService {
 
 	private final BoardMapper boardMapper;
-	private final ResponseService responseService;
+	
 
 	@Transactional
 	@Override
@@ -40,6 +40,13 @@ public class BoardServiceImple implements BoardService {
 		
 		return boardMapper.findBoardListByQuery(boardQuery).stream()
 						.map(v -> new BoardListResponseDto(v)).collect(Collectors.toList());
+	}
+	
+	@Transactional
+	@Override
+	public int findBoardCntByQuery(BoardQuery boardQuery) {
+		
+		return boardMapper.findBoardCntByQuery(boardQuery);
 	}
 
 	@Transactional
@@ -87,5 +94,6 @@ public class BoardServiceImple implements BoardService {
 		
 		return boardMapper.findAllSi();
 	}
+
 
 }

@@ -16,6 +16,7 @@ import com.backend.response.result.SingleResult;
 public interface BoardService {
 	void registerBoard(BoardRegisterRequestDto boardRegisterRequestDto);
 	List<BoardListResponseDto> findBoardListByQuery(BoardQuery boardQuery);
+	int findBoardCntByQuery(BoardQuery boardQuery);
 	List<BoardListResponseDto> findPopularBoardList(String siName, String category);
 	BoardDetailResponseDto findBoardByBId(Long bId);
 	void updateBoard(BoardModifyRequestDto boardModifyRequestDto);
