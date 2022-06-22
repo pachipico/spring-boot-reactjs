@@ -15,10 +15,10 @@
     
     <!-- 일반적인 제목, 작성자, 내용 정렬해서 검색 (orderBy가 null 이면 정확도순, desc나 asc가 있으면 작성일 기준으로 정렬)-->
     <select id="findBoardListByQuery" resultType="board">
-        select b.bId, title, writer,siName, regAt, modAt, hit, category, count(bl.bId) as likeCnt 
-        from board b left join boardLike bl on b.bId = bl.bId 
+        select b.bId, b.title, b.writer,u.nickName, b.siName, b.regAt, b.modAt, b.hit, b.category, count(bl.bId) as likeCnt 
+        from board b left join boardLike bl on b.bId = bl.bId left join user u on b.writer = u.email
         where 
-        siName = #{siName} 
+        b.siName = #{siName} 
         <if test="query != null">
         and ${field} like "%${query}%"  
         </if>
@@ -49,9 +49,9 @@
     
     <!-- 게시판 상단에 인기 게시글 5개 -->
     <select id="findPopularBoardList" resultType="board" parameterType="query">
-        select b.bId , title, writer, siName, category ,regAt, modAt,hit,  COUNT(bl.bid) as likeCnt
-		from board b left join boardLike bl on b.bId = bl.bid 
-		where siName = #{siName}
+        select b.bId , b.title, b.writer, u.nickName, b.siName, b.category ,b.regAt, b.modAt,b.hit,  COUNT(bl.bid) as likeCnt
+		from board b left join boardLike bl on b.bId = bl.bid left join user u on b.writer = u.email
+		where b.siName = #{siName}
 		<if test='category != null'>
 		and category like "%${category}%"
 		</if> 
@@ -70,18 +70,22 @@
     
     <!-- 게시글 한개 조회 -->
     <select id="findBoardDetail" resultType="board">
-        select b.*, count(bl.bId) as likeCnt
-        from board b left join boardLike bl on b.bId = bl.bId
+        select b.*, u.nickName, count(bl.bId) as likeCnt
+        from board b left join boardLike bl on b.bId = bl.bId left join user u on b.writer = u.email
         where b.bId = #{bId}
         group by b.bId
     </select>
     
     <select id="findNextBId" resultType="long">
-        select b.bId from board b left join boardLike bl on b.bId = bl.bId where b.bId > 10 limit 1 
+	    select min(b2.bId)
+		from board b2
+		where b2.bId > #{bId} and siName = #{siName} limit 1
     </select>
     
     <select id="findPrevBId" resultType="long">
-        select b.bId from board b left join boardLike bl on b.bId = bl.bId  <![CDATA[where b.bId < 10]]> order by bId desc limit 1
+	    select max(b2.bId)
+		from board b2 
+		<![CDATA[where b2.bId < #{bId}]]> and siName = #{siName}
     </select>
     
    <!-- 게시글 조회수 올리기 -->

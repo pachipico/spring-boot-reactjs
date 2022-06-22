@@ -42,9 +42,6 @@ public class BoardMapperTest {
 	}
 	@Test
 	public void updateBoard() {
-		Board board = new Board(5L, "title5", "용인", "123@123.com", "바뀐 내용", "", "", 0, "기타", 0);
-		mapper.updateBoard(board);
-		mapper.findBoardDetail(5L);
 	}
 	
 	@Test

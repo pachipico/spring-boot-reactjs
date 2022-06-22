@@ -59,17 +59,17 @@ public class BoardController {
 		return responseService.getListResult(boardList);
 	}
 
-	@GetMapping("/{bId}/next")
-	public SingleResult<Long> next(@PathVariable("bId") Long bId) {
-		Long id = boardService.findNextBId(bId);
+	@GetMapping("/{bId}/{siName}/next")
+	public SingleResult<Long> next(@PathVariable("bId") Long bId, @PathVariable("siName") String siName) {
+		Long id = boardService.findNextBId(bId, siName);
 		log.debug(" next bId >>>>>>>>>>> {}", id);
 		return responseService.getSingleResult(id);
 	}
 
-	@GetMapping("/{bId}/prev")
-	public SingleResult<Long> prev(@PathVariable("bId") Long bId) {
+	@GetMapping("/{bId}/{siName}/prev")
+	public SingleResult<Long> prev(@PathVariable("bId") Long bId, @PathVariable("siName") String siName) {
 
-		return responseService.getSingleResult(boardService.findPrevBId(bId));
+		return responseService.getSingleResult(boardService.findPrevBId(bId, siName));
 	}
 	
 	@GetMapping("/{bId}")

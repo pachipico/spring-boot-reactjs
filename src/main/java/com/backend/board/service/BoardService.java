@@ -19,8 +19,8 @@ public interface BoardService {
 	int findBoardCntByQuery(BoardQuery boardQuery);
 	List<BoardListResponseDto> findPopularBoardList(String siName, String category);
 	BoardDetailResponseDto findBoardByBId(Long bId);
-	Long findNextBId(Long bId);
-	Long findPrevBId(Long bId);
+	Long findNextBId(Long bId, String siName);
+	Long findPrevBId(Long bId, String siName);
 	void updateBoard(BoardModifyRequestDto boardModifyRequestDto);
 	void deleteBoard(Long bId);
 	void likeBoard(BoardLikeDto boardLikeDto);

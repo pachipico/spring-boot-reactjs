@@ -13,6 +13,7 @@ public class BoardDetailResponseDto {
 	private String siName;
 	private String title;
 	private String writer;
+	private String nickName;
 	private int hit;
 	private String content;
 	private String regAt;
@@ -25,6 +26,7 @@ public class BoardDetailResponseDto {
 		this.siName = board.getSiName();
 		this.title = board.getTitle();
 		this.writer = board.getWriter();
+		this.nickName = board.getNickName();
 		this.hit = board.getHit();
 		this.content = board.getContent();
 		this.regAt = board.getRegAt();

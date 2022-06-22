@@ -12,6 +12,7 @@ public class BoardListResponseDto {
 	private String siName;
 	private String title;
 	private String writer;
+	private String nickName;
 	private String regAt;
 	private String modAt;
 	private int hit;
@@ -23,6 +24,7 @@ public class BoardListResponseDto {
 		this.siName = board.getSiName();
 		this.title = board.getTitle();
 		this.writer = board.getWriter();
+		this.nickName = board.getNickName();
 		this.regAt = board.getRegAt();
 		this.modAt = board.getModAt();
 		this.hit = board.getHit();

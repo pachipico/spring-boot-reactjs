@@ -67,16 +67,16 @@ public class BoardServiceImple implements BoardService {
 	
 	@Transactional
 	@Override
-	public Long findNextBId(Long bId) {
+	public Long findNextBId(Long bId, String siName) {
 		
-		return boardMapper.findNextBId(bId);
+		return boardMapper.findNextBId(bId, siName);
 	}
 
 	@Transactional
 	@Override
-	public Long findPrevBId(Long bId) {
+	public Long findPrevBId(Long bId, String siName) {
 		
-		return boardMapper.findPrevBId(bId);
+		return boardMapper.findPrevBId(bId, siName);
 	}
 
 	@Transactional

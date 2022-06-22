@@ -20,9 +20,15 @@ public class BoardServiceTest {
 
 	@Test
 	public void register() {
-		
+		String[] arr = new String[] {"기타", "질문"};
 		for(int i = 0; i<= 100; i ++) {
-			boardService.registerBoard(new BoardRegisterRequestDto("test title" + i, "123@123.com", "this is test content number" + i, "기타", "서울"));
+			try {
+				Thread.sleep(2000);
+				boardService.registerBoard(new BoardRegisterRequestDto("test title" + i, "123@123.com", "this is test content number" + i, arr[i%2], "서울"));
+			} catch (InterruptedException e) {
+				
+				e.printStackTrace();
+			}
 		}
 	}
 

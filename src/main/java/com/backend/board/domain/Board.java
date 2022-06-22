@@ -17,6 +17,7 @@ public class Board {
 	private String title;
 	private String siName;
 	private String writer;
+	private String nickName;
 	private String content;
 	private String regAt;
 	private String modAt;
