@@ -18,7 +18,7 @@ public class BoardListResponseDto {
 	private int hit;
 	private String category;
 	private int likeCnt;
-
+	private int commentCnt;
 	public BoardListResponseDto(Board board) {
 		this.bId = board.getBId();
 		this.siName = board.getSiName();
@@ -30,6 +30,7 @@ public class BoardListResponseDto {
 		this.hit = board.getHit();
 		this.category = board.getCategory();
 		this.likeCnt = board.getLikeCnt();
+		this.commentCnt = board.getCommentCnt();
 	}
 
 }

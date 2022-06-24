@@ -24,6 +24,7 @@ public class Board {
 	private int hit;
 	private String category;
 	private int likeCnt;
+	private int commentCnt;
 	
 	
 	/**

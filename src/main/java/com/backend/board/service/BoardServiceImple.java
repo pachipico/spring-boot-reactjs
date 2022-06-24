@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.board.domain.Board;
 import com.backend.board.dto.BoardDetailResponseDto;
 import com.backend.board.dto.BoardLikeDto;
 import com.backend.board.dto.BoardListResponseDto;
@@ -16,6 +17,8 @@ import com.backend.board.dto.Si;
 import com.backend.board.mapper.BoardMapper;
 import com.backend.response.ResponseService;
 import com.backend.response.result.SingleResult;
+import com.backend.user.domain.User;
+import com.backend.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class BoardServiceImple implements BoardService {
 
 	private final BoardMapper boardMapper;
+	private final UserMapper userMapper;
 	
 
 	@Transactional
@@ -61,8 +65,9 @@ public class BoardServiceImple implements BoardService {
 	@Override
 	public BoardDetailResponseDto findBoardByBId(Long bId) {
 		boardMapper.updateBoardHit(bId);
-
-		return new BoardDetailResponseDto(boardMapper.findBoardDetail(bId));
+		Board board = boardMapper.findBoardDetail(bId);
+		User user = userMapper.findByEmail(board.getWriter());
+		return new BoardDetailResponseDto(board, user);
 	}
 	
 	@Transactional

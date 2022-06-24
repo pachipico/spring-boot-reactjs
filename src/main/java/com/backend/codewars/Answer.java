@@ -12,16 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Answer {
-	public static int duplicateCount(String text) {
-		List<String> list = Arrays.asList(text.toLowerCase().split(""));
-		List<String> dup = new ArrayList<>();
-		for(String s : list) {
-			if(list.indexOf(s) != list.lastIndexOf(s)) {
-				if(dup.contains(s)) continue;
-				dup.add(s);
-			}
-		}
-		return dup.size();
-	}
+
+	
 
 }

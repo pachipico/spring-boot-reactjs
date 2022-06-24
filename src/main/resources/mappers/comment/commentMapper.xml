@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.backend.comment.mapper.CommentMapper">
+   <insert id="registerComment" parameterType="comment">
+        insert into comment(writer, content, bId) values(#{writer}, #{content}, #{bId})
+   </insert>
+   
+   <select id="findCommentByBId" resultType="comment">
+        select c.cId , c.writer  , u.nickName , c.regAt , c.modAt , c.content , c.bId 
+        from comment c left join `user` u on c.writer = u.email where c.bId = #{bId}
+        GROUP BY c.cId  
+        order by c.cId desc 
+   </select>
+   
+   <select id="findCommentByWriter" resultType="comment">
+        select c.cId , c.writer  , u.nickName , c.regAt , c.modAt , c.content , c.bId 
+        from comment c left join `user` u on c.writer = u.email where c.writer = #{email} GROUP BY c.cId
+        order by c.cId desc
+          
+   </select>
+   
+   <!-- 좋아요 부분은 아직 미정 -->
+   
+   <update id="modifyComment" parameterType="comment">
+        update comment set content = #{content}, modAt = now() where cId = #{cId}
+   </update>
+   
+   <delete id="deleteComment" parameterType="long">
+        delete from comment where cId = #{cId}
+   </delete>
+</mapper>
