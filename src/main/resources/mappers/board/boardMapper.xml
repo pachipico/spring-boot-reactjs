@@ -88,7 +88,7 @@
 		<![CDATA[where b2.bId < #{bId}]]> and siName = #{siName}
     </select>
     
-   <!-- 게시글 조회수 올리기 -->
+   <!-- 게시글 조회수 올리기 --> 
    <update id="updateBoardHit">
        update board set hit = (hit + 1) where bId = #{bId}
    </update>
