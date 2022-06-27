@@ -1,5 +1,6 @@
 package com.backend.user.controller;
 
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,7 +12,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.backend.advice.exception.CAccessDeniedException;
 import com.backend.advice.exception.UserNotFoundCException;
@@ -27,6 +31,7 @@ import com.backend.user.dto.UserModifyRequestDto;
 import com.backend.user.dto.UserReissueDto;
 import com.backend.user.dto.UserResponseDto;
 import com.backend.user.dto.UserSignupRequestDto;
+import com.backend.user.handler.ProfileImgHandler;
 import com.backend.user.service.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -40,6 +45,7 @@ public class UserController {
 	private final UserService userService;
 	private final ResponseService responseService;
 	private final SecurityService securityService;
+	private final ProfileImgHandler imgHandler;
 
 	@PostMapping("/signup")
 	public CommonResult signup(@RequestBody UserSignupRequestDto userSignupRequestDto) {
@@ -110,8 +116,25 @@ public class UserController {
 	@PutMapping("/user/modify/{category}")
 	public CommonResult modify(@RequestBody UserModifyRequestDto userModifyRequestDto,
 			@PathVariable("category") String category) {
-		int res = userService.updateUserInfo(userModifyRequestDto, category);
-		return res > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult();
+		
+//		int res = userService.updateUserInfo(userModifyRequestDto, category);
+//		return res > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult();
+		return null;
+	}
+	
+	@PostMapping("/user/profileImg")
+	public CommonResult profileImg(@RequestParam("email") String email, @RequestParam("profileImg") MultipartFile profileImg) throws IOException {
+		
+		UserResponseDto user = userService.findByEmail(email);
+		imgHandler.uploadFile(profileImg);
+		//기본 이미지면 삭제 안하고 기본 이미지면 기존 사용하던 프로필 삭제 로직.
+		UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
+		userModifyRequestDto.setEmail(email);
+		
+		
+		
+		
+		return responseService.getSingleResult("dsfadf");
 	}
 
 	@DeleteMapping("/user/delete/{email}")
