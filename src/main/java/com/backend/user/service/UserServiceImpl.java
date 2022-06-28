@@ -3,6 +3,7 @@ package com.backend.user.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -11,6 +12,7 @@ import com.backend.board.dto.BoardListResponseDto;
 import com.backend.board.mapper.BoardMapper;
 import com.backend.response.ResponseService;
 import com.backend.response.result.CommonResult;
+import com.backend.security.service.SecurityService;
 import com.backend.user.domain.User;
 import com.backend.user.dto.UserDetailsDto;
 import com.backend.user.dto.UserLoginRequestDto;
@@ -31,6 +33,8 @@ public class UserServiceImpl implements UserService {
 	private final UserMapper userMapper;
 	private final BoardMapper boardMapper;
 	private final ResponseService responseService;
+	private final BCryptPasswordEncoder passwordEncoder;
+	private final SecurityService securityService;
 
 	// 시큐리티 적용 후 비밀번호 인코딩/디코딩
 	// private final PasswordEncoder passwordEncoder;
@@ -95,12 +99,13 @@ public class UserServiceImpl implements UserService {
 
 		switch (category) {
 		case "nickName":
-			return userMapper.updateUserNickName(userModifyRequestDto.toEntity());
+
+			return userMapper.isNickNameAvailable(userModifyRequestDto.getNickName()) == null
+					? userMapper.updateUserNickName(userModifyRequestDto.toEntity())
+					: -1;
 		case "address":
 
 			return userMapper.updateUserAddress(userModifyRequestDto.toEntity());
-		case "password":
-			return userMapper.updateUserPassword(userModifyRequestDto.toEntity());
 		case "profileImg":
 			return userMapper.updateUserProfileImg(userModifyRequestDto.toEntity());
 		case "point":

@@ -28,6 +28,7 @@ import com.backend.security.service.SecurityService;
 import com.backend.user.dto.UserDetailsDto;
 import com.backend.user.dto.UserLoginRequestDto;
 import com.backend.user.dto.UserModifyRequestDto;
+import com.backend.user.dto.UserPasswordModifyRequestDto;
 import com.backend.user.dto.UserReissueDto;
 import com.backend.user.dto.UserResponseDto;
 import com.backend.user.dto.UserSignupRequestDto;
@@ -116,24 +117,32 @@ public class UserController {
 	@PutMapping("/user/modify/{category}")
 	public CommonResult modify(@RequestBody UserModifyRequestDto userModifyRequestDto,
 			@PathVariable("category") String category) {
-		
-//		int res = userService.updateUserInfo(userModifyRequestDto, category);
-//		return res > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult();
-		return null;
+		int res = 0;
+		log.debug(">>>>>>>>>>>>>>>{}, {} , {}, {}", category,category.equals("password"), userModifyRequestDto.getPassword(), userModifyRequestDto.getNewPassword());
+		if (category.equals("password")) {
+			return securityService.modifyPassword(userModifyRequestDto) > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult(-1, "기존 비밀번호가 틀리거나 올바르지 않은 비밀번호 형식입니다.");
+		} else {
+			return userService.updateUserInfo(userModifyRequestDto, category) > 0 ? responseService.getSuccessfulResult() : responseService.getFailResult(-1, "올바르지 않거나 사용중인 닉네임 입니다.");
+		}
 	}
-	
+
 	@PostMapping("/user/profileImg")
-	public CommonResult profileImg(@RequestParam("email") String email, @RequestParam("profileImg") MultipartFile profileImg) throws IOException {
-		
+	public CommonResult profileImg(@RequestParam("email") String email,
+			@RequestParam("profileImg") MultipartFile profileImg) throws IOException {
+
 		UserResponseDto user = userService.findByEmail(email);
-		imgHandler.uploadFile(profileImg);
-		//기본 이미지면 삭제 안하고 기본 이미지면 기존 사용하던 프로필 삭제 로직.
+		String imgName = imgHandler.uploadFile(profileImg);
+		log.debug(">>>>>>>>{}", imgName);
+		// 기본 이미지면 삭제 안하고 기본 이미지면 기존 사용하던 프로필 삭제 로직.
 		UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
 		userModifyRequestDto.setEmail(email);
-		
-		
-		
-		
+		userModifyRequestDto.setProfileImg(imgName);
+		String prevProfileImg = user.getProfileImg();
+		if (prevProfileImg != "default.jpg") {
+			imgHandler.removeFile(prevProfileImg);
+		}
+		userService.updateUserInfo(userModifyRequestDto, "profileImg");
+
 		return responseService.getSingleResult("dsfadf");
 	}
 
@@ -142,9 +151,9 @@ public class UserController {
 		return userService.deleteUser(email) > 0 ? responseService.getSuccessfulResult()
 				: responseService.getFailResult();
 	}
-	
+
 	@GetMapping("/{email}/liked")
-	public ListResult<Long> userLikedBId(@PathVariable("email") String email){
+	public ListResult<Long> userLikedBId(@PathVariable("email") String email) {
 		log.debug("???{}", email);
 		return responseService.getListResult(userService.getUserLikedBoardBId(email));
 	}

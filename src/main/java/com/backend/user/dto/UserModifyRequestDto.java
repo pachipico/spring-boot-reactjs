@@ -18,6 +18,7 @@ public class UserModifyRequestDto {
 	private String siName;
 	private String profileImg;
 	private String password;
+	private String newPassword;
 	private String lastLoggedIn;
 	private int point;
 	private int popularity;
