@@ -10,6 +10,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.backend.board.domain.Board;
 import com.backend.board.dto.BoardListResponseDto;
 import com.backend.board.mapper.BoardMapper;
+import com.backend.comment.domain.Comment;
+import com.backend.comment.dto.CommentResponseDto;
+import com.backend.comment.mapper.CommentMapper;
 import com.backend.response.ResponseService;
 import com.backend.response.result.CommonResult;
 import com.backend.security.service.SecurityService;
@@ -32,6 +35,7 @@ public class UserServiceImpl implements UserService {
 
 	private final UserMapper userMapper;
 	private final BoardMapper boardMapper;
+	private final CommentMapper commentMapper;
 	private final ResponseService responseService;
 	private final BCryptPasswordEncoder passwordEncoder;
 	private final SecurityService securityService;
@@ -64,10 +68,13 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserDetailsDto findUserDetails(String email) {
 		List<Board> boardsList = boardMapper.findBoardListByUser(email);
+		List<Comment> commentList = commentMapper.findCommentByWriter(email);
+		User user = userMapper.findByEmail(email);
+		List<CommentResponseDto> comments = commentList.stream().map(v -> new CommentResponseDto(v, user)).collect(Collectors.toList());
 		List<BoardListResponseDto> boards = boardsList.stream().map(v -> new BoardListResponseDto(v))
 				.collect(Collectors.toList());
-		User user = userMapper.findByEmail(email);
-		UserDetailsDto userDetailsDto = new UserDetailsDto(user, boards);
+		
+		UserDetailsDto userDetailsDto = new UserDetailsDto(user, boards, comments);
 		return userDetailsDto;
 	}
 

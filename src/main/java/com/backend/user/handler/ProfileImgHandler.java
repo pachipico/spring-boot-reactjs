@@ -16,7 +16,7 @@ import net.coobird.thumbnailator.Thumbnails;
 @AllArgsConstructor
 public class ProfileImgHandler {
 
-	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/profileImg";
+	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
 	
 	public String uploadFile(MultipartFile file) {
 		File folders = new File(UP_DIR);

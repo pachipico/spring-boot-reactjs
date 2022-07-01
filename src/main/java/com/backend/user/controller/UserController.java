@@ -143,7 +143,7 @@ public class UserController {
 		}
 		userService.updateUserInfo(userModifyRequestDto, "profileImg");
 
-		return responseService.getSingleResult("dsfadf");
+		return responseService.getSingleResult(imgName);
 	}
 
 	@DeleteMapping("/user/delete/{email}")
