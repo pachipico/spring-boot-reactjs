@@ -86,7 +86,7 @@ public class BoardServiceImple implements BoardService {
 
 	@Transactional
 	@Override
-	public void updateBoard(BoardModifyRequestDto boardModifyRequestDto) {
+	public void modifyBoard(BoardModifyRequestDto boardModifyRequestDto) {
 		boardMapper.updateBoard(boardModifyRequestDto.toEntity());
 	}
 

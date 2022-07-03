@@ -2,9 +2,11 @@ package com.backend.board.controller;
 
 import java.util.List;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.board.dto.BoardDetailResponseDto;
 import com.backend.board.dto.BoardLikeDto;
 import com.backend.board.dto.BoardListResponseDto;
+import com.backend.board.dto.BoardModifyRequestDto;
 import com.backend.board.dto.BoardQuery;
 import com.backend.board.dto.BoardRegisterRequestDto;
 import com.backend.board.dto.Si;
@@ -91,6 +94,18 @@ public class BoardController {
 		return responseService.getSuccessfulResult();
 	}
 	
+	@DeleteMapping("{bId}")
+	public CommonResult delete (@PathVariable("bId") Long bId) {
+		boardService.deleteBoard(bId);
+		return responseService.getSuccessfulResult();
+	}
+	
+	@PutMapping("{bId}")
+	public CommonResult modify (@PathVariable("bId") Long bId, @RequestBody BoardModifyRequestDto boardModifyRequestDto) {
+		boardService.modifyBoard(boardModifyRequestDto);
+		 
+		return responseService.getSuccessfulResult();
+	}
 	
 
 }

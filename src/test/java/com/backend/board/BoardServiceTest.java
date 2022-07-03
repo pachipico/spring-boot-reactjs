@@ -41,7 +41,7 @@ public class BoardServiceTest {
 	public void updateBoard() {
 		BoardModifyRequestDto boardModifyRequestDto = new BoardModifyRequestDto(10L, "modified title",
 				"this is modified content.", "기타");
-		boardService.updateBoard(boardModifyRequestDto);
+		boardService.modifyBoard(boardModifyRequestDto);
 		boardService.findBoardListByQuery(new BoardQuery("title", "", "서울", "", "", 0, 15));
 	}
 

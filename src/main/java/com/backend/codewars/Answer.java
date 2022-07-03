@@ -23,7 +23,7 @@ public class Answer {
 		 		years++;
 		 		principal += principal*interest - (principal*interest*tax);
 		 		System.out.printf("%d years, %d , desired: %d", years, principal, desired);
-		 		if(principal > desired) break;
+		 		if(principal > desired) break;   
 		 	}
 		 	return years;
 		  }

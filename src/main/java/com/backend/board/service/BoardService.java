@@ -21,7 +21,7 @@ public interface BoardService {
 	BoardDetailResponseDto findBoardByBId(Long bId);
 	Long findNextBId(Long bId, String siName);
 	Long findPrevBId(Long bId, String siName);
-	void updateBoard(BoardModifyRequestDto boardModifyRequestDto);
+	void modifyBoard(BoardModifyRequestDto boardModifyRequestDto);
 	void deleteBoard(Long bId);
 	void likeBoard(BoardLikeDto boardLikeDto);
 	void unlikeBoard(BoardLikeDto boardLikeDto);

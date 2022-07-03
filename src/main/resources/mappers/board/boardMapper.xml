@@ -20,7 +20,7 @@
         where 
         b.siName = #{siName} 
         <if test="query != null">
-        and ${field} like "%${query}%"  
+        and b.${field} like "%${query}%"  
         </if>
         <if test='category != null'>
         and category like '%${category}%'
