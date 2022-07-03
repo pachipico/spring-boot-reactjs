@@ -18,6 +18,7 @@ import com.backend.comment.service.CommentService;
 import com.backend.response.ResponseService;
 import com.backend.response.result.CommonResult;
 import com.backend.response.result.ListResult;
+import com.backend.response.result.SingleResult;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,9 +33,9 @@ public class CommentController {
 	private final CommentService commentService;
 
 	@PostMapping("/register")
-	public CommonResult registerComment(@RequestBody CommentRegisterRequestDto commentRegisterRequestDto) {
-		commentService.registerComment(commentRegisterRequestDto);
-		return responseService.getSuccessfulResult();
+	public SingleResult<Integer> registerComment(@RequestBody CommentRegisterRequestDto commentRegisterRequestDto) {
+		
+		return responseService.getSingleResult(commentService.registerComment(commentRegisterRequestDto));
 	}
 
 	@GetMapping("/id/{bId}")

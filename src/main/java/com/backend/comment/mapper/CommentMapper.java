@@ -13,4 +13,5 @@ public interface CommentMapper {
 	List<Comment> findCommentByWriter(String email);
 	void modifyComment(Comment comment);
 	void deleteComment(Long cId);
+	int findLastSavedCId();
 }

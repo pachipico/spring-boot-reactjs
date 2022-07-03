@@ -10,7 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 
 
 public interface CommentService {
-	void registerComment(CommentRegisterRequestDto commentRegisterRequestDto);
+	int registerComment(CommentRegisterRequestDto commentRegisterRequestDto);
 	List<CommentResponseDto> findCommentByBId(Long bId);
 	List<CommentResponseDto> findCommentByWriter(String email);
 	void modifyComment(CommentModifyRequestDto commentModifyRequestDto);

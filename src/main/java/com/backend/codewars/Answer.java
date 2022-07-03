@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -17,14 +19,9 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Answer {
-	 public static int calculateYears(double principal, double interest,  double tax, double desired) {
-		 int years = 0;
-		 	while(true) {
-		 		years++;
-		 		principal += principal*interest - (principal*interest*tax);
-		 		System.out.printf("%d years, %d , desired: %d", years, principal, desired);
-		 		if(principal > desired) break;   
-		 	}
-		 	return years;
-		  }
+	public static boolean isTriangle(int a, int b, int c) {
+		int[] arr = new int[] {a,b,c};
+		Arrays.sort(arr);
+		return arr[2] < arr[0] + arr[1];
+	}
 }

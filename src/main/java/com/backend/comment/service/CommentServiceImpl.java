@@ -26,8 +26,9 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public void registerComment(CommentRegisterRequestDto commentRegisterRequestDto) {
+	public int registerComment(CommentRegisterRequestDto commentRegisterRequestDto) {
 		commentMapper.registerComment(commentRegisterRequestDto.toEntity());
+		return commentMapper.findLastSavedCId();
 	}
 
 	@Transactional
@@ -52,6 +53,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public void modifyComment(CommentModifyRequestDto commentModifyRequestDto) {
 		commentMapper.modifyComment(commentModifyRequestDto.toEntity());
+		
 	}
 
 	@Transactional

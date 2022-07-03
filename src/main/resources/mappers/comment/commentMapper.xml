@@ -5,6 +5,10 @@
         insert into comment(writer, content, bId) values(#{writer}, #{content}, #{bId})
    </insert>
    
+   <select id="findLastSavedCId" resultType="int">
+        select max(cId) from comment
+   </select>
+   
    <select id="findCommentByBId" resultType="comment">
         select c.cId , c.writer  , u.nickName , c.regAt , c.modAt , c.content , c.bId 
         from comment c left join `user` u on c.writer = u.email where c.bId = #{bId}
