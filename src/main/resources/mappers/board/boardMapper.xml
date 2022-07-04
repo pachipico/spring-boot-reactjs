@@ -18,7 +18,7 @@
         select b.bId, b.title, b.writer,u.nickName, b.siName, b.regAt, b.modAt, b.hit, b.category, count(bl.bId) as likeCnt, count(c.cId) as commentCnt
         from board b left join boardLike bl on b.bId = bl.bId left join user u on b.writer = u.email left join comment c on b.bId = c.bId
         where 
-        b.siName = #{siName} 
+        b.siName like "%${siName}%" 
         <if test="query != null">
         and b.${field} like "%${query}%"  
         </if>
@@ -37,7 +37,7 @@
         select count(bId)
         from board
         where 
-        siName = #{siName} 
+        siName like "%${siName}%" 
         <if test="query != null">
         and ${field} like "%${query}%" 
         </if>
@@ -45,6 +45,18 @@
         and category like '%${category}%'
         </if>
         
+    </select>
+    
+    <!-- 유저가 작성 한 글 -->
+    <select id="findUserWroteList" resultType="board">
+        select b.* from board b where writer = #{email}
+    </select>
+    
+    <!-- 유저가 좋아요 한 글  -->
+    <select id="findUserLikedList" resultType="board">
+        select b.* from boardLike bl left join board b on bl.bId = b.bId 
+        where bl.email = #{email}
+        group by bl.bId
     </select>
     
     <!-- 게시판 상단에 인기 게시글 5개 -->

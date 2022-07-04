@@ -17,6 +17,8 @@ public interface BoardService {
 	void registerBoard(BoardRegisterRequestDto boardRegisterRequestDto);
 	List<BoardListResponseDto> findBoardListByQuery(BoardQuery boardQuery);
 	int findBoardCntByQuery(BoardQuery boardQuery);
+	List<BoardListResponseDto> findUserWroteList(String email);
+	List<BoardListResponseDto> findUserLikedList(String email);
 	List<BoardListResponseDto> findPopularBoardList(String siName, String category);
 	BoardDetailResponseDto findBoardByBId(Long bId);
 	Long findNextBId(Long bId, String siName);

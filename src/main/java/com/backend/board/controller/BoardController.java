@@ -1,5 +1,6 @@
 package com.backend.board.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -47,13 +48,22 @@ public class BoardController {
 		return responseService.getSuccessfulResult();
 	}
 
-	@GetMapping("list")
+	@GetMapping("/list")
 	public ListResult<BoardListResponseDto> getBoardList(BoardQuery query) {
 		List<BoardListResponseDto> boardList = boardService.findBoardListByQuery(query);
 		int totalCnt = boardService.findBoardCntByQuery(query);
 		ListResult<BoardListResponseDto> res = responseService.getListResult(boardList);
 		res.setTotalCnt(totalCnt);
 		return res;
+	}
+	
+	@GetMapping("/list/{query}")
+	public ListResult<BoardListResponseDto> getBoardByQuery(@PathVariable("query") String query, String email){
+		
+		List<BoardListResponseDto> list = new ArrayList<>();
+		if(query.equals("wrote")) list = boardService.findUserWroteList(email);
+		if(query.equals("liked")) list = boardService.findUserLikedList(email);
+		return responseService.getListResult(list);
 	}
 	
 	@GetMapping(value = {"/popular/{siName}","/popular/{siName}/{category}"})

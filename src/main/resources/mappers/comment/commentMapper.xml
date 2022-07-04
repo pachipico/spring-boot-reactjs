@@ -17,11 +17,14 @@
    </select>
    
    <select id="findCommentByWriter" resultType="comment">
-        select c.cId , c.writer  , u.nickName , c.regAt , c.modAt , c.content , c.bId 
-        from comment c left join `user` u on c.writer = u.email where c.writer = #{email} GROUP BY c.cId
+        select c.cId , c.writer  , u.nickName , c.regAt , c.modAt , c.content , c.bId , b.title  
+        from comment c left join `user` u on c.writer = u.email left join board b on c.bId = b.bId
+        where c.writer = #{email} GROUP BY c.cId
         order by c.cId desc
           
    </select>
+   
+
    
    <!-- 좋아요 부분은 아직 미정 -->
    

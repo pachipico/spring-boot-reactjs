@@ -19,6 +19,7 @@ public class ProfileImgHandler {
 	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
 	
 	public String uploadFile(MultipartFile file) {
+		log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>??");
 		File folders = new File(UP_DIR);
 		if(!folders.exists()) {
 			folders.mkdirs();

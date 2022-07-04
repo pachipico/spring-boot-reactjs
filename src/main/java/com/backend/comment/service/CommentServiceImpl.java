@@ -45,6 +45,7 @@ public class CommentServiceImpl implements CommentService {
 	public List<CommentResponseDto> findCommentByWriter(String email) {
 		List<Comment> list = commentMapper.findCommentByWriter(email);
 		return list.stream().map(v -> {
+
 			return new CommentResponseDto(v, userMapper.findByEmail(v.getWriter()));
 		}).collect(Collectors.toList());
 	}

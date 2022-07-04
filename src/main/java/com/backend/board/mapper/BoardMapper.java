@@ -14,6 +14,8 @@ public interface BoardMapper {
 	List<Board> findBoardListByQuery(BoardQuery boardQuery);
 	int findBoardCntByQuery(BoardQuery boardQuery);
 	List<Board> findPopularBoardList(String siName, String category);
+	List<Board> findUserWroteList(String email);
+	List<Board> findUserLikedList(String email);
 	List<Board> findBoardListByUser(String email);
 	Board findBoardDetail(Long bId);
 	Long findNextBId(Long bId, String siName);

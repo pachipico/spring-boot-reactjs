@@ -3,9 +3,11 @@ package com.backend.board.dto;
 import com.backend.board.domain.Board;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
+@Setter
 @ToString
 public class BoardListResponseDto {
 	private Long bId;

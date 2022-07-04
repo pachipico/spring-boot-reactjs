@@ -17,6 +17,7 @@ public class Comment {
 	private String modAt;
 	private String content;
 	private Long bId;
+	private String boardTitle;
 	
 	/**
 	 * register에 쓸 생성자.

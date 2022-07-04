@@ -30,7 +30,6 @@ public class BoardServiceImple implements BoardService {
 
 	private final BoardMapper boardMapper;
 	private final UserMapper userMapper;
-	
 
 	@Transactional
 	@Override
@@ -41,24 +40,42 @@ public class BoardServiceImple implements BoardService {
 	@Transactional
 	@Override
 	public List<BoardListResponseDto> findBoardListByQuery(BoardQuery boardQuery) {
-		
-		return boardMapper.findBoardListByQuery(boardQuery).stream()
-						.map(v -> new BoardListResponseDto(v)).collect(Collectors.toList());
+
+		return boardMapper.findBoardListByQuery(boardQuery).stream().map(v -> new BoardListResponseDto(v))
+				.collect(Collectors.toList());
 	}
-	
+
 	@Transactional
 	@Override
 	public int findBoardCntByQuery(BoardQuery boardQuery) {
-		
+
 		return boardMapper.findBoardCntByQuery(boardQuery);
+	}
+
+	@Override
+	public List<BoardListResponseDto> findUserWroteList(String email) {
+
+		return boardMapper.findUserWroteList(email).stream().map(v -> new BoardListResponseDto(v))
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public List<BoardListResponseDto> findUserLikedList(String email) {
+
+		return boardMapper.findUserLikedList(email).stream().map(v -> {
+			BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
+			boardListResponseDto.setWriter(userMapper.findByEmail(v.getWriter()).getNickName());
+			return boardListResponseDto;
+		})
+				.collect(Collectors.toList());
 	}
 
 	@Transactional
 	@Override
 	public List<BoardListResponseDto> findPopularBoardList(String siName, String category) {
 
-		return boardMapper.findPopularBoardList(siName, category).stream()
-				.map(v -> new BoardListResponseDto(v)).collect(Collectors.toList());
+		return boardMapper.findPopularBoardList(siName, category).stream().map(v -> new BoardListResponseDto(v))
+				.collect(Collectors.toList());
 	}
 
 	@Transactional
@@ -69,18 +86,18 @@ public class BoardServiceImple implements BoardService {
 		User user = userMapper.findByEmail(board.getWriter());
 		return new BoardDetailResponseDto(board, user);
 	}
-	
+
 	@Transactional
 	@Override
 	public Long findNextBId(Long bId, String siName) {
-		
+
 		return boardMapper.findNextBId(bId, siName);
 	}
 
 	@Transactional
 	@Override
 	public Long findPrevBId(Long bId, String siName) {
-		
+
 		return boardMapper.findPrevBId(bId, siName);
 	}
 
@@ -110,11 +127,8 @@ public class BoardServiceImple implements BoardService {
 
 	@Override
 	public List<Si> findAllSi() {
-		
+
 		return boardMapper.findAllSi();
 	}
-
-	
-
 
 }

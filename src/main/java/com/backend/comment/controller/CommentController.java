@@ -47,6 +47,7 @@ public class CommentController {
 	@GetMapping("/writer/{email}")
 	public ListResult<CommentResponseDto> findByWriter(@PathVariable("email") String email){
 		List<CommentResponseDto> list = commentService.findCommentByWriter(email);
+		log.debug("comment by {} >>>>>> {}", email, list.size());
 		return responseService.getListResult(list);
 	}
 	
