@@ -7,10 +7,12 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.backend.board.mapper.BoardMapper;
 import com.backend.comment.domain.Comment;
 import com.backend.comment.dto.CommentModifyRequestDto;
 import com.backend.comment.dto.CommentRegisterRequestDto;
 import com.backend.comment.dto.CommentResponseDto;
+import com.backend.comment.dto.UserWroteCommentDto;
 import com.backend.comment.mapper.CommentMapper;
 import com.backend.user.mapper.UserMapper;
 
@@ -23,7 +25,9 @@ import lombok.extern.slf4j.Slf4j;
 public class CommentServiceImpl implements CommentService {
 	private final CommentMapper commentMapper;
 	private final UserMapper userMapper;
-
+	private final BoardMapper boardMapper;
+	
+	
 	@Transactional
 	@Override
 	public int registerComment(CommentRegisterRequestDto commentRegisterRequestDto) {
@@ -42,11 +46,10 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public List<CommentResponseDto> findCommentByWriter(String email) {
+	public List<UserWroteCommentDto> findCommentByWriter(String email) {
 		List<Comment> list = commentMapper.findCommentByWriter(email);
 		return list.stream().map(v -> {
-
-			return new CommentResponseDto(v, userMapper.findByEmail(v.getWriter()));
+			return new UserWroteCommentDto(v, userMapper.findByEmail(v.getWriter()), boardMapper.findBoardDetail(v.getBId()));
 		}).collect(Collectors.toList());
 	}
 

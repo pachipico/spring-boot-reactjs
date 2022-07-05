@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.backend.comment.dto.CommentModifyRequestDto;
 import com.backend.comment.dto.CommentRegisterRequestDto;
 import com.backend.comment.dto.CommentResponseDto;
+import com.backend.comment.dto.UserWroteCommentDto;
 import com.backend.comment.service.CommentService;
 import com.backend.response.ResponseService;
 import com.backend.response.result.CommonResult;
@@ -45,8 +46,8 @@ public class CommentController {
 	}
 
 	@GetMapping("/writer/{email}")
-	public ListResult<CommentResponseDto> findByWriter(@PathVariable("email") String email){
-		List<CommentResponseDto> list = commentService.findCommentByWriter(email);
+	public ListResult<UserWroteCommentDto> findByWriter(@PathVariable("email") String email){
+		List<UserWroteCommentDto> list = commentService.findCommentByWriter(email);
 		log.debug("comment by {} >>>>>> {}", email, list.size());
 		return responseService.getListResult(list);
 	}

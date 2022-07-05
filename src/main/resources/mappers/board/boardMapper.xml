@@ -83,8 +83,8 @@
     
     <!-- 게시글 한개 조회 -->
     <select id="findBoardDetail" resultType="board">
-        select b.*, u.nickName, count(bl.bId) as likeCnt
-        from board b left join boardLike bl on b.bId = bl.bId left join user u on b.writer = u.email
+        select b.*, u.nickName, count(bl.bId) as likeCnt, count(c.cId) as commentCnt
+        from board b left join boardLike bl on b.bId = bl.bId left join user u on b.writer = u.email left join comment c on b.bId = c.bId
         where b.bId = #{bId}
         group by b.bId
     </select>
