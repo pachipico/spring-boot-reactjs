@@ -21,7 +21,7 @@ public class CommentResponseDto {
 	private String content;
 	private Long bId;
 	private UserResponseDto writer;
-	private String boardTitle;
+	
 	
 	public CommentResponseDto(Comment comment, User user) {
 		this.cId = comment.getCId();
@@ -31,7 +31,7 @@ public class CommentResponseDto {
 		this.content = comment.getContent();
 		this.bId = comment.getBId();
 		this.writer = new UserResponseDto(user);
-		this.boardTitle = comment.getBoardTitle();
+		
 	}
 	
 	

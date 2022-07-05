@@ -39,6 +39,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public List<CommentResponseDto> findCommentByBId(Long bId) {
 		List<Comment> list = commentMapper.findCommentByBId(bId);
+		log.debug("findCommentByBId >>>>> {}", bId);
 		return list.stream().map(v -> {
 			return new CommentResponseDto(v, userMapper.findByEmail(v.getWriter()));
 		}).collect(Collectors.toList());

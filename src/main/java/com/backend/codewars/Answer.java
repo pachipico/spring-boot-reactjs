@@ -19,9 +19,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Answer {
-	public static boolean isTriangle(int a, int b, int c) {
-		int[] arr = new int[] {a,b,c};
-		Arrays.sort(arr);
-		return arr[2] < arr[0] + arr[1];
+	public static String smash(String... words) {
+		return String.join("", words);
+		
 	}
 }

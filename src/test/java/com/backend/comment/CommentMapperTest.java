@@ -32,6 +32,11 @@ public class CommentMapperTest {
 	}
 	
 	@Test
+	public void findCommentByBId() {
+		mapper.findCommentByBId(216L);
+	}
+	
+	@Test
 	public void update () {
 		Comment comment = new Comment(30L, "바뀐내용");
 		mapper.modifyComment(comment);

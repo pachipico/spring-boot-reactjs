@@ -40,7 +40,7 @@ public class BoardServiceImple implements BoardService {
 	@Transactional
 	@Override
 	public List<BoardListResponseDto> findBoardListByQuery(BoardQuery boardQuery) {
-
+		log.debug("findBoardListByQuery >>>> {}", boardQuery);
 		return boardMapper.findBoardListByQuery(boardQuery).stream().map(v -> new BoardListResponseDto(v))
 				.collect(Collectors.toList());
 	}

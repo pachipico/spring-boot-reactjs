@@ -10,7 +10,6 @@ import lombok.extern.slf4j.Slf4j;
 @Getter
 @Setter
 @ToString
-@AllArgsConstructor
 public class BoardQuery {
 
 //	String field, String query, String siName, String category, String orderBy, int start
@@ -19,6 +18,18 @@ public class BoardQuery {
 	private String siName;
 	private String category;
 	private String orderBy;
+	private int page;
+	private int size;
 	private int start;
-	private int cnt;
+	public BoardQuery(String field, String query, String siName, String category, String orderBy, int page, int size) {
+		this.field = field;
+		this.query = query;
+		this.siName = siName;
+		this.category = category;
+		this.orderBy = orderBy;
+		this.page = page;
+		this.size = size;
+		this.start = (page - 1) * size;
+	}
+	
 }

@@ -9,5 +9,6 @@
         <typeAlias type="com.backend.board.domain.Board" alias="board"/>
         <typeAlias type="com.backend.board.dto.BoardQuery" alias="query"/>
         <typeAlias type="com.backend.board.dto.Si" alias="si"/>
+        
     </typeAliases>
 </configuration>

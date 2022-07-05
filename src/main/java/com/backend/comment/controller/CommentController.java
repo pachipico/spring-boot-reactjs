@@ -41,6 +41,7 @@ public class CommentController {
 
 	@GetMapping("/id/{bId}")
 	public ListResult<CommentResponseDto> findByBId(@PathVariable("bId") Long bId) {
+		log.debug("what the fuck");
 		List<CommentResponseDto> list = commentService.findCommentByBId(bId);
 		return responseService.getListResult(list);
 	}

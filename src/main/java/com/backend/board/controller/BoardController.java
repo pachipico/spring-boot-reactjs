@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.backend.board.dto.BoardDetailResponseDto;
@@ -36,12 +37,11 @@ public class BoardController {
 
 	private final ResponseService responseService;
 	private final BoardService boardService;
-
 	@GetMapping("/si")
-	public List<Si> findAllSi(){
+	public List<Si> findAllSi() {
 		return boardService.findAllSi();
 	}
-	
+
 	@PostMapping("/register")
 	public CommonResult registerBoard(@RequestBody BoardRegisterRequestDto boardRegisterRequestDto) {
 		boardService.registerBoard(boardRegisterRequestDto);
@@ -49,25 +49,42 @@ public class BoardController {
 	}
 
 	@GetMapping("/list")
-	public ListResult<BoardListResponseDto> getBoardList(BoardQuery query) {
-		List<BoardListResponseDto> boardList = boardService.findBoardListByQuery(query);
-		int totalCnt = boardService.findBoardCntByQuery(query);
-		ListResult<BoardListResponseDto> res = responseService.getListResult(boardList);
+	public ListResult<BoardListResponseDto> getBoardList(
+			@RequestParam("page") int page, 
+			@RequestParam("size") int size,
+			@RequestParam("siName")String siName,
+			@RequestParam(name = "field", defaultValue = "title", required = false) String field,
+			@RequestParam(name = "query", defaultValue = "", required = false) String query,
+			@RequestParam(name = "orderBy", defaultValue = "desc", required = false) String orderBy,
+			@RequestParam(name = "category", defaultValue = "", required = false)String category
+			) {
+		BoardQuery boardQuery = new BoardQuery(field, query, siName, category, orderBy, page, size);
+		
+		
+		ListResult<BoardListResponseDto> res = responseService.getListResult(boardService.findBoardListByQuery(boardQuery));
+		int totalCnt = boardService.findBoardCntByQuery(boardQuery);
+		res.setCurrPage(page);
 		res.setTotalCnt(totalCnt);
+		
+		res.setTotalPages((int)Math.ceil(((double)totalCnt)/size));
+		log.debug("getBoardList size: {}", res.getData().size());
 		return res;
 	}
-	
+
 	@GetMapping("/list/{query}")
-	public ListResult<BoardListResponseDto> getBoardByQuery(@PathVariable("query") String query, String email){
-		
+	public ListResult<BoardListResponseDto> getBoardByQuery(@PathVariable("query") String query, String email) {
+
 		List<BoardListResponseDto> list = new ArrayList<>();
-		if(query.equals("wrote")) list = boardService.findUserWroteList(email);
-		if(query.equals("liked")) list = boardService.findUserLikedList(email);
+		if (query.equals("wrote"))
+			list = boardService.findUserWroteList(email);
+		if (query.equals("liked"))
+			list = boardService.findUserLikedList(email);
 		return responseService.getListResult(list);
 	}
-	
-	@GetMapping(value = {"/popular/{siName}","/popular/{siName}/{category}"})
-	public ListResult<BoardListResponseDto> getPopular(@PathVariable("siName") String siName, @PathVariable(required = false, name = "category") String category){
+
+	@GetMapping(value = { "/popular/{siName}", "/popular/{siName}/{category}" })
+	public ListResult<BoardListResponseDto> getPopular(@PathVariable("siName") String siName,
+			@PathVariable(required = false, name = "category") String category) {
 		List<BoardListResponseDto> boardList = boardService.findPopularBoardList(siName, category);
 		return responseService.getListResult(boardList);
 	}
@@ -84,38 +101,37 @@ public class BoardController {
 
 		return responseService.getSingleResult(boardService.findPrevBId(bId, siName));
 	}
-	
+
 	@GetMapping("/{bId}")
-	public SingleResult<BoardDetailResponseDto> detail(@PathVariable("bId") Long bId){
+	public SingleResult<BoardDetailResponseDto> detail(@PathVariable("bId") Long bId) {
 		BoardDetailResponseDto board = boardService.findBoardByBId(bId);
 		return responseService.getSingleResult(board);
 	}
-	
-	
+
 	@PostMapping("/like")
 	public CommonResult like(@RequestBody BoardLikeDto boardLikeDto) {
 		boardService.likeBoard(boardLikeDto);
 		return responseService.getSuccessfulResult();
 	}
-	
+
 	@PostMapping("/unlike")
 	public CommonResult unLike(@RequestBody BoardLikeDto boardLikeDto) {
 		boardService.unlikeBoard(boardLikeDto);
 		return responseService.getSuccessfulResult();
 	}
-	
+
 	@DeleteMapping("{bId}")
-	public CommonResult delete (@PathVariable("bId") Long bId) {
+	public CommonResult delete(@PathVariable("bId") Long bId) {
 		boardService.deleteBoard(bId);
 		return responseService.getSuccessfulResult();
 	}
-	
+
 	@PutMapping("{bId}")
-	public CommonResult modify (@PathVariable("bId") Long bId, @RequestBody BoardModifyRequestDto boardModifyRequestDto) {
+	public CommonResult modify(@PathVariable("bId") Long bId,
+			@RequestBody BoardModifyRequestDto boardModifyRequestDto) {
 		boardService.modifyBoard(boardModifyRequestDto);
-		 
+
 		return responseService.getSuccessfulResult();
 	}
-	
 
 }
