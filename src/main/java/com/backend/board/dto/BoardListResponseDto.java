@@ -1,6 +1,7 @@
 package com.backend.board.dto;
 
 import com.backend.board.domain.Board;
+import com.backend.common.dto.Pageable;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,7 +10,7 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class BoardListResponseDto {
+public class BoardListResponseDto{
 	private Long bId;
 	private String siName;
 	private String title;
@@ -20,7 +21,7 @@ public class BoardListResponseDto {
 	private int hit;
 	private String category;
 	private int likeCnt;
-	private int commentCnt;
+	private int commentCnt; 
 	public BoardListResponseDto(Board board) {
 		this.bId = board.getBId();
 		this.siName = board.getSiName();

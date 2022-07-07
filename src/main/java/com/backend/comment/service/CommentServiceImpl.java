@@ -14,6 +14,7 @@ import com.backend.comment.dto.CommentRegisterRequestDto;
 import com.backend.comment.dto.CommentResponseDto;
 import com.backend.comment.dto.UserWroteCommentDto;
 import com.backend.comment.mapper.CommentMapper;
+import com.backend.common.dto.PageableWithEmail;
 import com.backend.user.mapper.UserMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -32,6 +33,7 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public int registerComment(CommentRegisterRequestDto commentRegisterRequestDto) {
 		commentMapper.registerComment(commentRegisterRequestDto.toEntity());
+		log.debug("commentService >>> register {}", commentRegisterRequestDto);
 		return commentMapper.findLastSavedCId();
 	}
 
@@ -47,13 +49,20 @@ public class CommentServiceImpl implements CommentService {
 
 	@Transactional
 	@Override
-	public List<UserWroteCommentDto> findCommentByWriter(String email) {
-		List<Comment> list = commentMapper.findCommentByWriter(email);
+	public List<UserWroteCommentDto> findCommentByWriter(PageableWithEmail pageableWithEmail) {
+		List<Comment> list = commentMapper.findCommentByWriter(pageableWithEmail);
 		return list.stream().map(v -> {
 			return new UserWroteCommentDto(v, userMapper.findByEmail(v.getWriter()), boardMapper.findBoardDetail(v.getBId()));
 		}).collect(Collectors.toList());
 	}
 
+	@Transactional
+	@Override
+	public int findCommentByWriterCnt(String email) {
+		log.debug("CommentService findCommentByWriterCnt email >>>> {}", email);
+		return commentMapper.findCommentByWriterCnt(email);
+	}
+	
 	@Transactional
 	@Override
 	public void modifyComment(CommentModifyRequestDto commentModifyRequestDto) {

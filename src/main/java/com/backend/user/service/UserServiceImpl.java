@@ -67,14 +67,12 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public UserDetailsDto findUserDetails(String email) {
-		List<Board> boardsList = boardMapper.findBoardListByUser(email);
-		List<Comment> commentList = commentMapper.findCommentByWriter(email);
+		int boardCnt = boardMapper.findBoardListByUser(email).size();
+		int commentCnt = commentMapper.findCommentByWriterCnt(email);
 		User user = userMapper.findByEmail(email);
-		List<CommentResponseDto> comments = commentList.stream().map(v -> new CommentResponseDto(v, user)).collect(Collectors.toList());
-		List<BoardListResponseDto> boards = boardsList.stream().map(v -> new BoardListResponseDto(v))
-				.collect(Collectors.toList());
 		
-		UserDetailsDto userDetailsDto = new UserDetailsDto(user, boards, comments);
+		
+		UserDetailsDto userDetailsDto = new UserDetailsDto(user, boardCnt, commentCnt);
 		return userDetailsDto;
 	}
 

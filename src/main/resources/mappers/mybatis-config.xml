@@ -10,5 +10,7 @@
         <typeAlias type="com.backend.board.dto.BoardQuery" alias="query"/>
         <typeAlias type="com.backend.board.dto.Si" alias="si"/>
         
+        <typeAlias type="com.backend.common.dto.PageableWithEmail" alias="pageableWithEmail"/>
+        
     </typeAliases>
 </configuration>

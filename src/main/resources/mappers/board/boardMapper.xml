@@ -48,15 +48,25 @@
     </select>
     
     <!-- 유저가 작성 한 글 -->
-    <select id="findUserWroteList" resultType="board">
-        select b.* from board b where writer = #{email}
+    <select id="findUserWroteList" resultType="board" parameterType="pageableWithEmail">
+        select b.* from board b where writer = #{email} order by b.bId desc limit #{start}, #{size}
+    </select>
+    
+    <select id="findUserWroteListCnt" parameterType="string" resultType="int">
+        select count(bId) from board where writer = #{email}
     </select>
     
     <!-- 유저가 좋아요 한 글  -->
-    <select id="findUserLikedList" resultType="board">
+    <select id="findUserLikedList" resultType="board" parameterType="pageableWithEmail">
         select b.* from boardLike bl left join board b on bl.bId = b.bId 
         where bl.email = #{email}
         group by bl.bId
+        limit #{start} , #{size}
+    </select>
+    
+    <select id="findUserLikedListCnt" parameterType="string" resultType="int">
+        select count(email)
+        from boardLike where email = #{email}
     </select>
     
     <!-- 게시판 상단에 인기 게시글 5개 -->
@@ -81,6 +91,7 @@
         order by siName, b.regAt desc
     </select>
     
+
     <!-- 게시글 한개 조회 -->
     <select id="findBoardDetail" resultType="board">
         select b.*, u.nickName, count(bl.bId) as likeCnt, count(c.cId) as commentCnt

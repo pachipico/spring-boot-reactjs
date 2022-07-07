@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Mapper;
 import com.backend.board.domain.Board;
 import com.backend.board.dto.BoardQuery;
 import com.backend.board.dto.Si;
+import com.backend.common.dto.PageableWithEmail;
 
 @Mapper
 public interface BoardMapper {
@@ -14,8 +15,10 @@ public interface BoardMapper {
 	List<Board> findBoardListByQuery(BoardQuery boardQuery);
 	int findBoardCntByQuery(BoardQuery boardQuery);
 	List<Board> findPopularBoardList(String siName, String category);
-	List<Board> findUserWroteList(String email);
-	List<Board> findUserLikedList(String email);
+	List<Board> findUserWroteList(PageableWithEmail pageableWithEmail);
+	int findUserWroteListCnt(String email);
+	List<Board> findUserLikedList(PageableWithEmail pageableWithEmail);
+	int findUserLikedListCnt(String email);
 	List<Board> findBoardListByUser(String email);
 	Board findBoardDetail(Long bId);
 	Long findNextBId(Long bId, String siName);

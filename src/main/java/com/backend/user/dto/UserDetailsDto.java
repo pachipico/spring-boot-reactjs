@@ -17,14 +17,14 @@ import lombok.extern.slf4j.Slf4j;
 @ToString
 public class UserDetailsDto extends UserResponseDto {
 	
-	private List<BoardListResponseDto> boards;
+	private int boardCnt;
 	
-	private List<CommentResponseDto> comments;
+	private int commentCnt;
 	
-	public UserDetailsDto(User user, List<BoardListResponseDto> boards, List<CommentResponseDto> comments) {
+	public UserDetailsDto(User user,int boardCnt, int commentCnt) {
 		super(user);
-		this.boards = boards;
-		this.comments = comments;
+		this.boardCnt = boardCnt;
+		this.commentCnt = commentCnt;
 	}
 
 }

@@ -15,6 +15,7 @@ import com.backend.board.dto.BoardQuery;
 import com.backend.board.dto.BoardRegisterRequestDto;
 import com.backend.board.dto.Si;
 import com.backend.board.mapper.BoardMapper;
+import com.backend.common.dto.PageableWithEmail;
 import com.backend.response.ResponseService;
 import com.backend.response.result.SingleResult;
 import com.backend.user.domain.User;
@@ -44,6 +45,9 @@ public class BoardServiceImple implements BoardService {
 		return boardMapper.findBoardListByQuery(boardQuery).stream().map(v -> new BoardListResponseDto(v))
 				.collect(Collectors.toList());
 	}
+	
+	
+	
 
 	@Transactional
 	@Override
@@ -52,17 +56,25 @@ public class BoardServiceImple implements BoardService {
 		return boardMapper.findBoardCntByQuery(boardQuery);
 	}
 
+	@Transactional
 	@Override
-	public List<BoardListResponseDto> findUserWroteList(String email) {
+	public List<BoardListResponseDto> findUserWroteList(PageableWithEmail pageableWithEmail) {
 
-		return boardMapper.findUserWroteList(email).stream().map(v -> new BoardListResponseDto(v))
+		return boardMapper.findUserWroteList(pageableWithEmail).stream().map(v -> new BoardListResponseDto(v))
 				.collect(Collectors.toList());
 	}
-
+	
+	@Transactional
 	@Override
-	public List<BoardListResponseDto> findUserLikedList(String email) {
+	public int findUserWroteListCnt(String email) {
+		return boardMapper.findUserWroteListCnt(email);
+	}
 
-		return boardMapper.findUserLikedList(email).stream().map(v -> {
+	@Transactional
+	@Override
+	public List<BoardListResponseDto> findUserLikedList(PageableWithEmail pageableWithEmail) {
+
+		return boardMapper.findUserLikedList(pageableWithEmail).stream().map(v -> {
 			BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
 			boardListResponseDto.setWriter(userMapper.findByEmail(v.getWriter()).getNickName());
 			return boardListResponseDto;
@@ -70,6 +82,13 @@ public class BoardServiceImple implements BoardService {
 				.collect(Collectors.toList());
 	}
 
+	
+	@Transactional
+	@Override
+	public int findUserLikedListCnt(String email) {
+		
+		return boardMapper.findUserLikedListCnt(email);
+	}
 	@Transactional
 	@Override
 	public List<BoardListResponseDto> findPopularBoardList(String siName, String category) {
@@ -130,5 +149,6 @@ public class BoardServiceImple implements BoardService {
 
 		return boardMapper.findAllSi();
 	}
+
 
 }

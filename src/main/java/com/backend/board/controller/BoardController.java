@@ -21,6 +21,7 @@ import com.backend.board.dto.BoardQuery;
 import com.backend.board.dto.BoardRegisterRequestDto;
 import com.backend.board.dto.Si;
 import com.backend.board.service.BoardService;
+import com.backend.common.dto.PageableWithEmail;
 import com.backend.response.ResponseService;
 import com.backend.response.result.CommonResult;
 import com.backend.response.result.ListResult;
@@ -37,6 +38,7 @@ public class BoardController {
 
 	private final ResponseService responseService;
 	private final BoardService boardService;
+
 	@GetMapping("/si")
 	public List<Si> findAllSi() {
 		return boardService.findAllSi();
@@ -49,37 +51,46 @@ public class BoardController {
 	}
 
 	@GetMapping("/list")
-	public ListResult<BoardListResponseDto> getBoardList(
-			@RequestParam("page") int page, 
-			@RequestParam("size") int size,
-			@RequestParam("siName")String siName,
+	public ListResult<BoardListResponseDto> getBoardList(@RequestParam("page") int page, @RequestParam("size") int size,
+			@RequestParam("siName") String siName,
 			@RequestParam(name = "field", defaultValue = "title", required = false) String field,
 			@RequestParam(name = "query", defaultValue = "", required = false) String query,
 			@RequestParam(name = "orderBy", defaultValue = "desc", required = false) String orderBy,
-			@RequestParam(name = "category", defaultValue = "", required = false)String category
-			) {
+			@RequestParam(name = "category", defaultValue = "", required = false) String category) {
 		BoardQuery boardQuery = new BoardQuery(field, query, siName, category, orderBy, page, size);
-		
-		
-		ListResult<BoardListResponseDto> res = responseService.getListResult(boardService.findBoardListByQuery(boardQuery));
+
+		ListResult<BoardListResponseDto> res = responseService
+				.getListResult(boardService.findBoardListByQuery(boardQuery));
 		int totalCnt = boardService.findBoardCntByQuery(boardQuery);
 		res.setCurrPage(page);
 		res.setTotalCnt(totalCnt);
-		
-		res.setTotalPages((int)Math.ceil(((double)totalCnt)/size));
+
+		res.setTotalPages((int) Math.ceil(((double) totalCnt) / size));
 		log.debug("getBoardList size: {}", res.getData().size());
 		return res;
 	}
 
 	@GetMapping("/list/{query}")
-	public ListResult<BoardListResponseDto> getBoardByQuery(@PathVariable("query") String query, String email) {
-
+	public ListResult<BoardListResponseDto> getBoardByQuery(@PathVariable("query") String query,
+			@RequestParam("email") String email, @RequestParam("page") int page, @RequestParam("size") int size) {
+		log.debug("getBoardByQuery >>>>>>>> {}", query);
+		PageableWithEmail pageableWithEmail = new PageableWithEmail(page, size, email);
 		List<BoardListResponseDto> list = new ArrayList<>();
-		if (query.equals("wrote"))
-			list = boardService.findUserWroteList(email);
-		if (query.equals("liked"))
-			list = boardService.findUserLikedList(email);
-		return responseService.getListResult(list);
+		int totalCnt = 0;
+		if (query.equals("wrote")) {
+			list = boardService.findUserWroteList(pageableWithEmail);
+			totalCnt = boardService.findUserWroteListCnt(email);
+		}
+		if (query.equals("liked")) {
+			list = boardService.findUserLikedList(pageableWithEmail);
+			totalCnt = boardService.findUserLikedListCnt(email);
+		}
+		ListResult<BoardListResponseDto> res = responseService.getListResult(list);
+		res.setCurrPage(page);
+		res.setTotalCnt(totalCnt);
+		res.setTotalPages((int) Math.ceil(((double) totalCnt) / size));
+
+		return res;
 	}
 
 	@GetMapping(value = { "/popular/{siName}", "/popular/{siName}/{category}" })
