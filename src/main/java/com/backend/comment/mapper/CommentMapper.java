@@ -13,6 +13,7 @@ public interface CommentMapper {
 	List<Comment> findCommentByBId(Long bId);
 	List<Comment> findCommentByWriter(PageableWithEmail pageableWithEmail);
 	int findCommentByWriterCnt(String email);
+	int findCommentCntByBId(Long bId);
 	void modifyComment(Comment comment);
 	void deleteComment(Long cId);
 	int findLastSavedCId();

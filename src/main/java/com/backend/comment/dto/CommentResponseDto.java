@@ -23,6 +23,7 @@ public class CommentResponseDto {
 	private UserResponseDto writer;
 	
 	
+	
 	public CommentResponseDto(Comment comment, User user) {
 		this.cId = comment.getCId();
 		this.nickName = comment.getNickName();
@@ -31,6 +32,7 @@ public class CommentResponseDto {
 		this.content = comment.getContent();
 		this.bId = comment.getBId();
 		this.writer = new UserResponseDto(user);
+		
 		
 	}
 	

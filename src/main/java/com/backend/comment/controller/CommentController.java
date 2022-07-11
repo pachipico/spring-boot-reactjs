@@ -34,6 +34,12 @@ public class CommentController {
 
 	private final ResponseService responseService;
 	private final CommentService commentService;
+	
+	
+	
+	
+	
+	
 
 	@PostMapping("/register")
 	public SingleResult<Integer> registerComment(@RequestBody CommentRegisterRequestDto commentRegisterRequestDto) {

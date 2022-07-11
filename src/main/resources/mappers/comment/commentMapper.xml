@@ -16,12 +16,18 @@
         
    </select>
    
+   
+   
    <select id="findCommentByWriter" resultType="comment" parameterType="pageableWithEmail">
         select c.cId , c.writer  , u.nickName , c.regAt , c.modAt , c.content , c.bId   
         from comment c left join `user` u on c.writer = u.email
         where c.writer = #{email} GROUP BY c.cId
-        order by c.cId desc
+        order by c.cId desc  
         limit #{start}, #{size}
+   </select>
+   
+   <select id="findCommentCntByBId" resultType="int" parameterType="long">
+        select count(cId) from comment where bId = #{bId} 
    </select>
    
    <select id="findCommentByWriterCnt" parameterType="string" resultType="int">

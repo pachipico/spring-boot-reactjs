@@ -84,6 +84,7 @@ public class BoardController {
 		if (query.equals("liked")) {
 			list = boardService.findUserLikedList(pageableWithEmail);
 			totalCnt = boardService.findUserLikedListCnt(email);
+			
 		}
 		ListResult<BoardListResponseDto> res = responseService.getListResult(list);
 		res.setCurrPage(page);
