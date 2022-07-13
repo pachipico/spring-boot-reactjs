@@ -25,7 +25,7 @@
         <if test='category != null'>
         and category like '%${category}%'
         </if>
-        group by b.bId
+        group by b.bId, b.title, b.writer, b.siName, b.regAt, b.modAt, b.hit, b.category
         
         order by regAt ${orderBy}
         

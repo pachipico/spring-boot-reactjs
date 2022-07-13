@@ -154,7 +154,7 @@ public class UserController {
 
 	@GetMapping("/{email}/liked")
 	public ListResult<Long> userLikedBId(@PathVariable("email") String email) {
-		log.debug("???{}", email);
+		log.debug("liked >>>> {}", email);
 		return responseService.getListResult(userService.getUserLikedBoardBId(email));
 	}
 }
