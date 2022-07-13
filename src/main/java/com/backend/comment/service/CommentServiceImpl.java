@@ -76,4 +76,10 @@ public class CommentServiceImpl implements CommentService {
 		commentMapper.deleteComment(cId);
 	}
 
+	@Override
+	@Transactional
+	public void deleteCommentList(List<Long> list) {
+		commentMapper.deleteCommentList(list);
+	}
+
 }

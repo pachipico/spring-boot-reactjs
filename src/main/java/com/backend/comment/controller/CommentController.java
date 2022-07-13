@@ -80,4 +80,10 @@ public class CommentController {
 		commentService.deleteComment(cId);
 		return responseService.getSuccessfulResult();
 	}
+
+	@PostMapping("/delete/list")
+	public CommonResult deleteCommentList(@RequestBody List<Long> list){
+		commentService.deleteCommentList(list);
+		return responseService.getSuccessfulResult();
+	}
 }

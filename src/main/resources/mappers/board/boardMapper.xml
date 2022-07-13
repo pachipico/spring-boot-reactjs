@@ -116,24 +116,32 @@
    <update id="updateBoardHit">
        update board set hit = (hit + 1) where bId = #{bId}
    </update>
-   
+
    <update id="updateBoard" parameterType="board">
-        update board set 
+        update board set
         <if test='title != null'>
-        title = #{title}, 
+        title = #{title},
         </if>
         <if test="content != null">
-        content = #{content}, 
+        content = #{content},
         </if>
         <if test="category != null">
-        category = #{category}, 
+        category = #{category},
         </if>
         modAt = now() where bId = #{bId}
    </update>
-   
+
    <delete id="deleteBoard">
         delete from board where bId = #{bId}
    </delete>
+
+    <delete id="deleteBoardList" parameterType="list">
+        delete from board where bId in (
+        <foreach collection="list" separator="," item="id">
+            #{id}
+        </foreach>
+        )
+    </delete>
    
    <!-- 게시글 좋아요 -->
    <insert id="likeBoard">
@@ -141,8 +149,15 @@
    </insert>
    
    <!-- 게시글 좋아요 취소 -->
-   <delete id="unlikeBoard">
+   <delete id="unlikeBoard" >
         delete from boardLike where bId = #{bId} and email = #{email}
    </delete>
+
+    <delete id="unlikeBoardList">
+        delete from boardLike where email = #{email} and bId in
+        <foreach collection="list" item="id" separator="," open="(" close=")">
+            #{id}
+        </foreach>
+    </delete>
     
 </mapper>

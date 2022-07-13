@@ -132,9 +132,21 @@ public class BoardController {
 		return responseService.getSuccessfulResult();
 	}
 
+	@PostMapping("/unlike/list/{email}")
+	public CommonResult unLikeList(@RequestBody List<Long> list, @PathVariable("email") String email){
+		boardService.unlikeBoardList(email,list);
+		return responseService.getSuccessfulResult();
+	}
+
 	@DeleteMapping("{bId}")
 	public CommonResult delete(@PathVariable("bId") Long bId) {
 		boardService.deleteBoard(bId);
+		return responseService.getSuccessfulResult();
+	}
+
+	@PostMapping("/delete/list")
+	public CommonResult deleteList (@RequestBody List<Long> list){
+		boardService.deleteBoardList(list);
 		return responseService.getSuccessfulResult();
 	}
 

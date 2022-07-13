@@ -18,4 +18,6 @@ public interface CommentService {
 	int findCommentByWriterCnt(String email);
 	void modifyComment(CommentModifyRequestDto commentModifyRequestDto);
 	void deleteComment(Long cId);
+
+	void deleteCommentList(List<Long> list);
 }

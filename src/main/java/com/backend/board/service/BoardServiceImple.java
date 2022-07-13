@@ -30,6 +30,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class BoardServiceImple implements BoardService {
 
+
 	private final BoardMapper boardMapper;
 	private final UserMapper userMapper;
 	private final CommentMapper commentMapper;
@@ -60,10 +61,10 @@ public class BoardServiceImple implements BoardService {
 	public List<BoardListResponseDto> findUserWroteList(PageableWithEmail pageableWithEmail) {
 
 		return boardMapper.findUserWroteList(pageableWithEmail).stream().map(v -> {
-			BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
-			boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
-			return boardListResponseDto;
-			})
+					BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
+					boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
+					return boardListResponseDto;
+				})
 				.collect(Collectors.toList());
 	}
 
@@ -135,6 +136,12 @@ public class BoardServiceImple implements BoardService {
 		boardMapper.deleteBoard(bId);
 	}
 
+	@Override
+	@Transactional
+	public void deleteBoardList(List<Long> list) {
+			boardMapper.deleteBoardList(list);
+	}
+
 	@Transactional
 	@Override
 	public void likeBoard(BoardLikeDto boardLikeDto) {
@@ -153,4 +160,9 @@ public class BoardServiceImple implements BoardService {
 		return boardMapper.findAllSi();
 	}
 
+	@Override
+	@Transactional
+	public void unlikeBoardList(String email, List<Long> list) {
+		boardMapper.unlikeBoardList(email, list);
+	}
 }

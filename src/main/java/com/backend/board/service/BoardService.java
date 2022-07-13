@@ -28,7 +28,10 @@ public interface BoardService {
 	Long findPrevBId(Long bId, String siName);
 	void modifyBoard(BoardModifyRequestDto boardModifyRequestDto);
 	void deleteBoard(Long bId);
+
+	void deleteBoardList(List<Long> list);
 	void likeBoard(BoardLikeDto boardLikeDto);
 	void unlikeBoard(BoardLikeDto boardLikeDto);
+	void unlikeBoardList(String email, List<Long> list);
 	List<Si> findAllSi();
 }

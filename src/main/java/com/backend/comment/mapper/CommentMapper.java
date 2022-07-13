@@ -16,5 +16,7 @@ public interface CommentMapper {
 	int findCommentCntByBId(Long bId);
 	void modifyComment(Comment comment);
 	void deleteComment(Long cId);
+
+	void deleteCommentList(List<Long> list);
 	int findLastSavedCId();
 }
