@@ -26,9 +26,9 @@ public interface BoardMapper {
 	void updateBoardHit(Long bId);
 	void updateBoard(Board board);
 	void deleteBoard(Long bId);
-
 	void deleteBoardList(List<Long> list);
 	void likeBoard(Long bId, String email);
+	int findLikeCntByBId(Long bId);
 	void unlikeBoard(Long bId, String email);
 	void unlikeBoardList(String email, List<Long> list);
 	List<Si> findAllSi();

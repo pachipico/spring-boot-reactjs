@@ -5,11 +5,12 @@ import com.backend.user.domain.User;
 import com.backend.user.dto.UserResponseDto;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @Getter
 @ToString
-
+@Setter
 public class BoardDetailResponseDto {
 	private Long bId;
 	private String siName;

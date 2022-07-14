@@ -45,7 +45,12 @@ public class BoardServiceImple implements BoardService {
 	@Override
 	public List<BoardListResponseDto> findBoardListByQuery(BoardQuery boardQuery) {
 		log.debug("findBoardListByQuery >>>> {}", boardQuery);
-		return boardMapper.findBoardListByQuery(boardQuery).stream().map(v -> new BoardListResponseDto(v))
+		return boardMapper.findBoardListByQuery(boardQuery).stream().map(v -> {
+					BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
+					boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
+					boardListResponseDto.setLikeCnt(boardMapper.findLikeCntByBId(v.getBId()));
+					return boardListResponseDto;
+				})
 				.collect(Collectors.toList());
 	}
 
@@ -107,7 +112,9 @@ public class BoardServiceImple implements BoardService {
 		boardMapper.updateBoardHit(bId);
 		Board board = boardMapper.findBoardDetail(bId);
 		User user = userMapper.findByEmail(board.getWriter());
-		return new BoardDetailResponseDto(board, user);
+		BoardDetailResponseDto boardDetailResponseDto = new BoardDetailResponseDto(board, user);
+		boardDetailResponseDto.setLikeCnt(boardMapper.findLikeCntByBId(bId));
+		return boardDetailResponseDto;
 	}
 
 	@Transactional
