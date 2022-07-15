@@ -58,7 +58,7 @@ public class BoardController {
 			@RequestParam(name = "orderBy", defaultValue = "desc", required = false) String orderBy,
 			@RequestParam(name = "category", defaultValue = "", required = false) String category) {
 		BoardQuery boardQuery = new BoardQuery(field, query, siName, category, orderBy, page, size);
-
+		log.debug("<><><<><><><><><><><><><>page, {}", page);
 		ListResult<BoardListResponseDto> res = responseService
 				.getListResult(boardService.findBoardListByQuery(boardQuery));
 		int totalCnt = boardService.findBoardCntByQuery(boardQuery);
@@ -153,6 +153,7 @@ public class BoardController {
 	@PutMapping("{bId}")
 	public CommonResult modify(@PathVariable("bId") Long bId,
 			@RequestBody BoardModifyRequestDto boardModifyRequestDto) {
+		boardModifyRequestDto.setBId(bId);
 		boardService.modifyBoard(boardModifyRequestDto);
 
 		return responseService.getSuccessfulResult();
