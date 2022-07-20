@@ -47,7 +47,7 @@ public class BoardServiceImple implements BoardService {
 		log.debug("findBoardListByQuery >>>> {}", boardQuery);
 		return boardMapper.findBoardListByQuery(boardQuery).stream().map(v -> {
 					BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
-					boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
+//					boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
 					boardListResponseDto.setLikeCnt(boardMapper.findLikeCntByBId(v.getBId()));
 					return boardListResponseDto;
 				})
@@ -67,7 +67,7 @@ public class BoardServiceImple implements BoardService {
 
 		return boardMapper.findUserWroteList(pageableWithEmail).stream().map(v -> {
 					BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
-					boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
+//					boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
 					return boardListResponseDto;
 				})
 				.collect(Collectors.toList());
@@ -86,7 +86,7 @@ public class BoardServiceImple implements BoardService {
 		return boardMapper.findUserLikedList(pageableWithEmail).stream().map(v -> {
 			BoardListResponseDto boardListResponseDto = new BoardListResponseDto(v);
 			boardListResponseDto.setWriter(userMapper.findByEmail(v.getWriter()).getNickName());
-			boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
+//			boardListResponseDto.setCommentCnt(commentMapper.findCommentCntByBId(v.getBId()));
 			return boardListResponseDto;
 		}).collect(Collectors.toList());
 	}

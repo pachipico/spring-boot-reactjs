@@ -15,8 +15,8 @@
     
     <!-- 일반적인 제목, 작성자, 내용 정렬해서 검색 (orderBy가 null 이면 정확도순, desc나 asc가 있으면 작성일 기준으로 정렬)-->
     <select id="findBoardListByQuery" resultType="board" parameterType="query">
-        select b.bId, b.title, b.writer,u.nickName, b.siName, b.regAt, b.modAt, b.hit, b.category
-        from board b left join boardLike bl on b.bId = bl.bId left join user u on b.writer = u.email left join comment c on b.bId = c.bId
+        select b.bId, b.title, b.writer,u.nickName, b.siName, b.regAt, b.modAt, b.hit, b.category, count(c.cId) as commentCnt
+        from board b left join user u on b.writer = u.email left join comment c on b.bId = c.bId
         where 
         b.siName like "%${siName}%" 
         <if test="query != null">
@@ -49,7 +49,9 @@
     
     <!-- 유저가 작성 한 글 -->
     <select id="findUserWroteList" resultType="board" parameterType="pageableWithEmail">
-        select b.* from board b where writer = #{email} order by b.bId desc limit #{start}, #{size}
+        select b.*, count(c.cId) as commentCnt, count(bl.bId) as likeCnt from board b left join comment c on b.bId = c.bId left join boardLike bl on b.bId = bl.bId
+        where b.writer = #{email} GROUP BY b.bId
+        ORDER BY b.bId desc limit #{start},#{size};
     </select>
     
     <select id="findUserWroteListCnt" parameterType="string" resultType="int">
@@ -58,7 +60,7 @@
     
     <!-- 유저가 좋아요 한 글  -->
     <select id="findUserLikedList" resultType="board" parameterType="pageableWithEmail">
-        select b.* from boardLike bl left join board b on bl.bId = b.bId 
+        select b.*, count(bl.bId) as likeCnt, count(c.cId) as commentCnt from boardLike bl left join board b on bl.bId = b.bId left join comment c on b.bId = c.bId
         where bl.email = #{email}
         group by bl.bId
         limit #{start} , #{size}
@@ -94,7 +96,7 @@
 
     <!-- 게시글 한개 조회 -->
     <select id="findBoardDetail" resultType="board">
-        select b.*, u.nickName
+        select b.*, u.nickName, count(c.cId) as commentCnt
         from board b left join boardLike bl on b.bId = bl.bId left join user u on b.writer = u.email left join comment c on b.bId = c.bId
         where b.bId = #{bId}
         group by b.bId
