@@ -2,6 +2,7 @@ package com.backend.board.service;
 
 import java.util.List;
 
+import com.backend.board.domain.Board;
 import com.backend.board.dto.BoardDetailResponseDto;
 import com.backend.board.dto.BoardLikeDto;
 import com.backend.board.dto.BoardListResponseDto;
@@ -34,4 +35,8 @@ public interface BoardService {
 	void unlikeBoard(BoardLikeDto boardLikeDto);
 	void unlikeBoardList(String email, List<Long> list);
 	List<Si> findAllSi();
+	List<BoardListResponseDto> findMostLikedList();
+	List<BoardListResponseDto> findMostViewedList();
+	List<BoardListResponseDto> findMostCommentedList();
+
 }

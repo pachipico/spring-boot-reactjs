@@ -78,7 +78,7 @@
 		where b.siName = #{siName}
 		<if test='category != null'>
 		and category like "%${category}%"
-		</if> 
+		</if>
 		GROUP by b.bid
 		order by count(bl.bid) desc
 		limit 5;
@@ -165,5 +165,18 @@
             #{id}
         </foreach>
     </delete>
-    
+
+    <select id="findMostLikedList" resultType="board">
+        select b.*, count(bl.bId) as likeCnt from board b left join boardLike bl on b.bId = bl.bId group by b.bId, bl.bId
+        order by count(bl.bId) desc limit 0, 20;
+    </select>
+    <select id="findMostViewedList" resultType="board">
+        select b.*, count(bl.bId) as likeCnt from board b left join boardLike bl on b.bId = bl.bId group by b.bId, bl.bId
+        order by b.hit desc limit 0,20
+    </select>
+
+    <select id="findMostCommentedList" resultType="board">
+        select b.* , count(c.bId) as commentCnt from board b left join comment c on b.bId = c.bId group by b.bId, c.bId
+        order by count(c.bId) desc limit 0,20
+    </select>
 </mapper>

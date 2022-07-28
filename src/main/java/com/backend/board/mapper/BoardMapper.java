@@ -32,5 +32,8 @@ public interface BoardMapper {
 	void unlikeBoard(Long bId, String email);
 	void unlikeBoardList(String email, List<Long> list);
 	List<Si> findAllSi();
+	List<Board> findMostLikedList();
+	List<Board> findMostViewedList();
+	List<Board> findMostCommentedList();
 	
 }

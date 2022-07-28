@@ -159,4 +159,18 @@ public class BoardController {
 		return responseService.getSuccessfulResult();
 	}
 
+	@GetMapping("/likedList")
+	public ListResult<BoardListResponseDto> likedList(){
+		return responseService.getListResult(boardService.findMostLikedList());
+	}
+
+	@GetMapping("/viewedList")
+	public ListResult<BoardListResponseDto> viewedList(){
+		return responseService.getListResult(boardService.findMostViewedList());
+	}
+
+	@GetMapping("/commentedList")
+	public ListResult<BoardListResponseDto> commentedList() {
+		return responseService.getListResult(boardService.findMostCommentedList());
+	}
 }
