@@ -79,7 +79,8 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	@Transactional
 	public void deleteCommentList(List<Long> list) {
-		commentMapper.deleteCommentList(list);
+
+		commentMapper.deleteCommentList(list.stream().map(String::valueOf).collect(Collectors.joining(",")));
 	}
 
 }

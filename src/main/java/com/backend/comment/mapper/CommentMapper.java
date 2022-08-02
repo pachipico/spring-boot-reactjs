@@ -17,6 +17,6 @@ public interface CommentMapper {
 	void modifyComment(Comment comment);
 	void deleteComment(Long cId);
 
-	void deleteCommentList(List<Long> list);
+	void deleteCommentList(String  listStr);
 	int findLastSavedCId();
 }

@@ -8,11 +8,16 @@
 	</insert>
 
 	<select id="login" resultType="user">
-		select * from user where email = #{email} and password = #{password}
+		select u.*, count(b.bId) as boardCnt, count(c.cId) as commentCnt from user u left join board b on u.email = b.writer left join comment c on u.email = c.writer
+		where u.email = #{email} and u.password = #{password}
+		group by u.email
 	</select>
 
 	<select id="findByEmail" resultType="user">
-		select * from user where email = #{email}
+		select u.*, count(b.bId) as boardCnt, count(c.cId) as commentCnt from user u left join board b on u.email = b.writer left join comment c on u.email = c.writer
+		where u.email = #{email}
+		group by u.email
+
 	</select>
 
 	<select id="isEmailAvailable" resultType="int">

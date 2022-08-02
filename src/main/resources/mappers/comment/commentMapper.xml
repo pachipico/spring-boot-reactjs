@@ -46,7 +46,7 @@
         delete from comment where cId = #{cId}
    </delete>
 
-    <delete id="deleteCommentList" parameterType="list">
-        delete from comment where cId in (${list})
+    <delete id="deleteCommentList" parameterType="string">
+        delete from comment where cId in (${listStrS})
     </delete>
 </mapper>

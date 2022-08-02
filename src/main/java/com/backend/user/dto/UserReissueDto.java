@@ -17,6 +17,7 @@ public class UserReissueDto {
 	private String siName;
 	private int popularity;
 	private int point;
+
 	private String token;
 	
 	public UserReissueDto(User user, String token) {
