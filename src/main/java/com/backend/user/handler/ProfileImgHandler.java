@@ -30,11 +30,11 @@ public class ProfileImgHandler {
 		
 		UUID uuid = UUID.randomUUID();
 		
-		String fullFileName = "og_" + uuid.toString() + "_" + onlyFileName;
+		String fullFileName = "og_" + uuid.toString() +".jpeg";
 		File storeFile = new File(folders, fullFileName);
 		try {
 			file.transferTo(storeFile);
-			File thumbnail = new File(folders, "th_" + uuid.toString()+ "_" + onlyFileName); 
+			File thumbnail = new File(folders, "th_" + uuid.toString());
 			Thumbnails.of(storeFile).size(100, 100).toFile(thumbnail);
 		} catch (IllegalStateException | IOException e) {
 			
