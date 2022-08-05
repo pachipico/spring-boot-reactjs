@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.backend.advice.exception.CAccessDeniedException;
 import com.backend.advice.exception.UserNotFoundCException;
@@ -23,12 +22,10 @@ import com.backend.response.ResponseService;
 import com.backend.response.result.CommonResult;
 import com.backend.response.result.ListResult;
 import com.backend.response.result.SingleResult;
-import com.backend.security.CustomAccessDeniedHandler;
 import com.backend.security.service.SecurityService;
 import com.backend.user.dto.UserDetailsDto;
 import com.backend.user.dto.UserLoginRequestDto;
 import com.backend.user.dto.UserModifyRequestDto;
-import com.backend.user.dto.UserPasswordModifyRequestDto;
 import com.backend.user.dto.UserReissueDto;
 import com.backend.user.dto.UserResponseDto;
 import com.backend.user.dto.UserSignupRequestDto;
@@ -131,7 +128,7 @@ public class UserController {
 			@RequestParam("profileImg") MultipartFile profileImg) throws IOException {
 
 		UserResponseDto user = userService.findByEmail(email);
-		String imgName = imgHandler.uploadFile(profileImg);
+		String imgName = imgHandler.uploadProfile(profileImg);
 		log.debug(">>>>>>>>{}", imgName);
 		// 기본 이미지면 삭제 안하고 기본 이미지면 기존 사용하던 프로필 삭제 로직.
 		UserModifyRequestDto userModifyRequestDto = new UserModifyRequestDto();
@@ -139,7 +136,7 @@ public class UserController {
 		userModifyRequestDto.setProfileImg(imgName);
 		String prevProfileImg = user.getProfileImg();
 		if (prevProfileImg != "default.jpg") {
-			imgHandler.removeFile(prevProfileImg);
+			imgHandler.removeProfile(prevProfileImg);
 		}
 		userService.updateUserInfo(userModifyRequestDto, "profileImg");
 

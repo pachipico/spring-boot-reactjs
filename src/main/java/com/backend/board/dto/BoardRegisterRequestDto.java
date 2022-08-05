@@ -20,8 +20,10 @@ public class BoardRegisterRequestDto {
 	private String content;
 	private String category;
 	private String siName;
+
+	private String img;
 	
 	public Board toEntity () {
-		return new Board(this.title, this.writer, this.content, this.category, this.siName);
+		return new Board(this.title, this.writer, this.content, this.category, this.siName, this.img);
 	}
 }

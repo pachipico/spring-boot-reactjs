@@ -18,8 +18,9 @@ public class BoardModifyRequestDto {
 	private String title;
 	private String content;
 	private String category;
+	private String img;
 	
 	public Board toEntity () {
-		return new Board(this.bId, this.title, this.content, this.category);
+		return new Board(this.bId, this.title, this.content, this.category, this.img);
 	}
 }

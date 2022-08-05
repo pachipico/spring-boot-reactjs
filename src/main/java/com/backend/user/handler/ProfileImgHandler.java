@@ -16,11 +16,12 @@ import net.coobird.thumbnailator.Thumbnails;
 @AllArgsConstructor
 public class ProfileImgHandler {
 
-	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
+	private final String PROFILE_UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
+	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/img";
 	
-	public String uploadFile(MultipartFile file) {
+	public String uploadProfile(MultipartFile file) {
 		log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>??");
-		File folders = new File(UP_DIR);
+		File folders = new File(PROFILE_UP_DIR);
 		if(!folders.exists()) {
 			folders.mkdirs();
 		}
@@ -42,14 +43,43 @@ public class ProfileImgHandler {
 		}
 		return fullFileName.substring(3);
 	}
+	public String uploadFile(MultipartFile file) {
+		log.debug(">>>>>>>>>>>>>>>upload>>>>>>>>>>>>>??");
+		File folders = new File(UP_DIR);
+		if(!folders.exists()) {
+			folders.mkdirs();
+		}
+		String originalFileName = file.getOriginalFilename();
+
+		String onlyFileName = originalFileName.substring(originalFileName.lastIndexOf(File.separator) + 1);
+
+		UUID uuid = UUID.randomUUID();
+
+		String fullFileName = "og_" + uuid.toString() +".jpeg";
+		File storeFile = new File(folders, fullFileName);
+		try {
+			file.transferTo(storeFile);
+		} catch (IllegalStateException | IOException e) {
+			e.printStackTrace();
+		}
+		return fullFileName.substring(3);
+	}
 	
-	public boolean removeFile(String fileName) {
-		File file = new File(UP_DIR);
+	public boolean removeProfile(String fileName) {
+		File file = new File(PROFILE_UP_DIR);
 		String ogFileName = "og_" + fileName;
 		String thFileName = "th_" + fileName;
 		File ogFile = new File(file, ogFileName);
 		File thFile = new File(file, thFileName);
 		ogFile.delete();
 		return thFile.delete();
+	}
+	public boolean removeFile(String fileName) {
+		File file = new File(UP_DIR);
+		String ogFileName = "og_" + fileName;
+
+		File ogFile = new File(file, ogFileName);
+
+		return ogFile.delete();
 	}
 }

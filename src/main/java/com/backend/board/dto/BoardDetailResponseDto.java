@@ -22,6 +22,7 @@ public class BoardDetailResponseDto {
 	private String modAt;
 	private String category;
 	private int likeCnt;
+	private String img;
 
 	public BoardDetailResponseDto(Board board, User user) {
 		this.bId = board.getBId();
@@ -34,5 +35,6 @@ public class BoardDetailResponseDto {
 		this.modAt = board.getModAt();
 		this.category = board.getCategory();
 		this.likeCnt = board.getLikeCnt();
+		this.img = board.getImg();
 	}
 }

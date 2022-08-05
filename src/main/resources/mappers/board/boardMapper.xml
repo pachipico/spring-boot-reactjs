@@ -3,7 +3,7 @@
 <mapper namespace="com.backend.board.mapper.BoardMapper">
 
     <insert id="register" parameterType="board">
-        insert into board(title, writer, content, siName, category) values(#{title}, #{writer}, #{content}, #{siName}, #{category})
+        insert into board(title, writer, content, siName, category, img) values(#{title}, #{writer}, #{content}, #{siName}, #{category}, #{img})
     </insert>
     
     <!-- 시 목록 가져오기 -->
@@ -129,6 +129,8 @@
         </if>
         <if test="category != null">
         category = #{category},
+        </if><if test="img != null">
+        img = #{img},
         </if>
         modAt = now() where bId = #{bId}
    </update>

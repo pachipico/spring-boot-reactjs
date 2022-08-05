@@ -23,6 +23,7 @@ public class Board {
 	private String modAt;
 	private int hit;
 	private String category;
+	private String img;
 	private int likeCnt;
 	private int commentCnt;
 	
@@ -34,13 +35,15 @@ public class Board {
 	 * @param content
 	 * @param category
 	 * @param siName
+	 * @param img
 	 */
-	public Board(String title, String writer, String content, String category, String siName) {
+	public Board(String title, String writer, String content, String category, String siName, String img) {
 		this.title = title;
 		this.writer = writer;
 		this.content = content;
 		this.category = category;
 		this.siName = siName;
+		this.img = img;
 	}
 
 	/**
@@ -49,12 +52,14 @@ public class Board {
 	 * @param title
 	 * @param content
 	 * @param category
+	 * @param img
 	 */
-	public Board(Long bId ,String title, String content, String category) {
+	public Board(Long bId ,String title, String content, String category, String img) {
 		this.bId = bId;
 		this.title = title;
 		this.content = content;
 		this.category = category;
+		this.img = img;
 	}
 	
 	

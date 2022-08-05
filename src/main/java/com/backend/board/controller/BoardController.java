@@ -3,6 +3,7 @@ package com.backend.board.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.backend.user.handler.ProfileImgHandler;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +30,7 @@ import com.backend.response.result.SingleResult;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -39,6 +41,8 @@ public class BoardController {
 	private final ResponseService responseService;
 	private final BoardService boardService;
 
+	private final ProfileImgHandler imgHandler;
+
 	@GetMapping("/si")
 	public List<Si> findAllSi() {
 		return boardService.findAllSi();
@@ -47,6 +51,14 @@ public class BoardController {
 	@PostMapping("/register")
 	public CommonResult registerBoard(@RequestBody BoardRegisterRequestDto boardRegisterRequestDto) {
 		boardService.registerBoard(boardRegisterRequestDto);
+		return responseService.getSuccessfulResult();
+	}
+	@PostMapping("/fileRegister")
+	public CommonResult fileRegister(@RequestParam("img") MultipartFile img, @RequestParam("title") String title, @RequestParam("siName") String siName, @RequestParam("category") String category, @RequestParam("content") String content, @RequestParam("writer") String writer){
+		log.debug("title: {}, writer: {}, content: {}, category: {}, file: {}", title, writer, content, category, img);
+		boardService.registerBoard(new BoardRegisterRequestDto(title, writer, content, category, siName, imgHandler.uploadFile(img)));
+
+
 		return responseService.getSuccessfulResult();
 	}
 
@@ -140,6 +152,9 @@ public class BoardController {
 
 	@DeleteMapping("{bId}")
 	public CommonResult delete(@PathVariable("bId") Long bId) {
+		BoardDetailResponseDto board = boardService.findBoardByBId(bId);
+		log.debug(">>>>>>>>>>> delete board : {}", board);
+		imgHandler.removeFile(board.getImg());
 		boardService.deleteBoard(bId);
 		return responseService.getSuccessfulResult();
 	}
@@ -147,12 +162,21 @@ public class BoardController {
 	@PostMapping("/delete/list")
 	public CommonResult deleteList (@RequestBody List<Long> list){
 		boardService.deleteBoardList(list);
+
 		return responseService.getSuccessfulResult();
 	}
 
 	@PutMapping("{bId}")
 	public CommonResult modify(@PathVariable("bId") Long bId,
-			@RequestBody BoardModifyRequestDto boardModifyRequestDto) {
+			@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("category") String category, @RequestParam(required = false, name="img") String img, @RequestParam(required = false, name = "newImg") MultipartFile newImg) {
+		BoardModifyRequestDto boardModifyRequestDto = new BoardModifyRequestDto(bId, title, content, category, img);
+		if(img == "removed") {
+			imgHandler.removeFile(img);
+			boardModifyRequestDto.setImg(null);
+		}
+		if(newImg != null){
+			boardModifyRequestDto.setImg(imgHandler.uploadFile(newImg));
+		}
 		boardModifyRequestDto.setBId(bId);
 		boardService.modifyBoard(boardModifyRequestDto);
 
