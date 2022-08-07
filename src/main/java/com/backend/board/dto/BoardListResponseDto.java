@@ -22,7 +22,7 @@ public class BoardListResponseDto {
     private String category;
     private int likeCnt;
     private int commentCnt;
-
+    private String img;
     public BoardListResponseDto(Board board, User user) {
         this.bId = board.getBId();
         this.siName = board.getSiName();
@@ -35,6 +35,7 @@ public class BoardListResponseDto {
         this.category = board.getCategory();
         this.likeCnt = board.getLikeCnt();
         this.commentCnt = board.getCommentCnt();
+        this.img = board.getImg();
     }
 
     public BoardListResponseDto(Board board, User user, int commentCnt) {
@@ -49,6 +50,7 @@ public class BoardListResponseDto {
         this.category = board.getCategory();
         this.likeCnt = board.getLikeCnt();
         this.commentCnt = commentCnt;
+        this.img = board.getImg();
     }
 
 }

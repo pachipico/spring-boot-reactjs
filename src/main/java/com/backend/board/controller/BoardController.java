@@ -50,11 +50,12 @@ public class BoardController {
 
 	@PostMapping("/register")
 	public CommonResult registerBoard(@RequestBody BoardRegisterRequestDto boardRegisterRequestDto) {
+		log.debug("??? register board boardRegisterRequestDto: {}", boardRegisterRequestDto);
 		boardService.registerBoard(boardRegisterRequestDto);
 		return responseService.getSuccessfulResult();
 	}
 	@PostMapping("/fileRegister")
-	public CommonResult fileRegister(@RequestParam("img") MultipartFile img, @RequestParam("title") String title, @RequestParam("siName") String siName, @RequestParam("category") String category, @RequestParam("content") String content, @RequestParam("writer") String writer){
+	public CommonResult fileRegister( @RequestParam("title") String title, @RequestParam("siName") String siName, @RequestParam("category") String category, @RequestParam("content") String content, @RequestParam("writer") String writer, @RequestParam(required = false, name = "img") MultipartFile img){
 		log.debug("title: {}, writer: {}, content: {}, category: {}, file: {}", title, writer, content, category, img);
 		boardService.registerBoard(new BoardRegisterRequestDto(title, writer, content, category, siName, imgHandler.uploadFile(img)));
 
@@ -168,16 +169,18 @@ public class BoardController {
 
 	@PutMapping("{bId}")
 	public CommonResult modify(@PathVariable("bId") Long bId,
-			@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("category") String category, @RequestParam(required = false, name="img") String img, @RequestParam(required = false, name = "newImg") MultipartFile newImg) {
+			@RequestParam("title") String title, @RequestParam("content") String content, @RequestParam("category") String category, @RequestParam(required = false, name="img") String img, @RequestParam(required = false, name = "newImg") MultipartFile newImg, @RequestParam("remove") boolean remove) {
 		BoardModifyRequestDto boardModifyRequestDto = new BoardModifyRequestDto(bId, title, content, category, img);
-		if(img == "removed") {
+		if(remove) {
 			imgHandler.removeFile(img);
 			boardModifyRequestDto.setImg(null);
 		}
 		if(newImg != null){
+			imgHandler.removeFile(img);
 			boardModifyRequestDto.setImg(imgHandler.uploadFile(newImg));
 		}
 		boardModifyRequestDto.setBId(bId);
+		System.out.println(">>>> boardModifyRequestDto img : " + boardModifyRequestDto.getImg());
 		boardService.modifyBoard(boardModifyRequestDto);
 
 		return responseService.getSuccessfulResult();

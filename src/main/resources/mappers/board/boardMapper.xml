@@ -15,7 +15,7 @@
     
     <!-- 일반적인 제목, 작성자, 내용 정렬해서 검색 (orderBy가 null 이면 정확도순, desc나 asc가 있으면 작성일 기준으로 정렬)-->
     <select id="findBoardListByQuery" resultType="board" parameterType="query">
-        select b.bId, b.title, b.writer,u.nickName, b.siName, b.regAt, b.modAt, b.hit, b.category, count(c.cId) as commentCnt
+        select b.bId, b.title, b.writer,u.nickName, b.siName, b.regAt, b.modAt, b.hit, b.category,b.img, count(c.cId) as commentCnt
         from board b left join user u on b.writer = u.email left join comment c on b.bId = c.bId
         where 
         b.siName like "%${siName}%" 
@@ -129,9 +129,9 @@
         </if>
         <if test="category != null">
         category = #{category},
-        </if><if test="img != null">
-        img = #{img},
         </if>
+        img = #{img},
+
         modAt = now() where bId = #{bId}
    </update>
 

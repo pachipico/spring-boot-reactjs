@@ -20,6 +20,7 @@ public class ProfileImgHandler {
 	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/img";
 	
 	public String uploadProfile(MultipartFile file) {
+
 		log.debug(">>>>>>>>>>>>>>>>>>>>>>>>>>>>??");
 		File folders = new File(PROFILE_UP_DIR);
 		if(!folders.exists()) {
@@ -44,6 +45,7 @@ public class ProfileImgHandler {
 		return fullFileName.substring(3);
 	}
 	public String uploadFile(MultipartFile file) {
+		if(file == null) return null;
 		log.debug(">>>>>>>>>>>>>>>upload>>>>>>>>>>>>>??");
 		File folders = new File(UP_DIR);
 		if(!folders.exists()) {
