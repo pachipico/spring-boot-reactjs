@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -16,8 +17,11 @@ import net.coobird.thumbnailator.Thumbnails;
 @AllArgsConstructor
 public class ProfileImgHandler {
 
-	private final String PROFILE_UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
-	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/img";
+
+//	private final String PROFILE_UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
+	private final String PROFILE_UP_DIR = "/home/ubuntu/qnaprj/profileImg";
+//	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/img";
+	private final String UP_DIR = "/home/ubuntu/qnaprj/img";
 	
 	public String uploadProfile(MultipartFile file) {
 
