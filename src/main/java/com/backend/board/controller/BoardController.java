@@ -56,7 +56,7 @@ public class BoardController {
 	}
 	@PostMapping("/fileRegister")
 	public CommonResult fileRegister( @RequestParam("title") String title, @RequestParam("siName") String siName, @RequestParam("category") String category, @RequestParam("content") String content, @RequestParam("writer") String writer, @RequestParam(required = false, name = "img") MultipartFile img){
-		log.debug("title: {}, writer: {}, content: {}, category: {}, file: {}", title, writer, content, category, img);
+		 log.debug("title: {}, writer: {}, content: {}, category: {}, file: {}", title, writer, content, category, img);
 		boardService.registerBoard(new BoardRegisterRequestDto(title, writer, content, category, siName, imgHandler.uploadFile(img)));
 
 
