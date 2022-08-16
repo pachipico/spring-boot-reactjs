@@ -30,6 +30,9 @@ public class JwtAuthenticationFilter extends GenericFilterBean {
 		String token = jwtProvider.resolveToken((HttpServletRequest) request);
 		log.debug("인증 처리 필터");
 		log.debug(">>>>>>>>>Token>>>>>>>>>:{}",token );
+		log.debug("pathInfo >>> ", ((HttpServletRequest) request).getPathInfo());
+		log.debug("localAddr >>> ", request.getLocalAddr());
+		log.debug("requestUri >>> ",((HttpServletRequest) request).getRequestURI());
 //		if(token == null || token.trim() == "") throw new NotAuthorizedException();
 		if(token != null && jwtProvider.validateToken(token)) {
 			log.debug("????");

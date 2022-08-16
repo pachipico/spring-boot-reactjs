@@ -46,10 +46,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/login", "/api/signup").permitAll()
-                .antMatchers("/api/board/likedList", "/api/board/viewedList", "/api/board/commentedList", "/api/board/list", "/api/board/si").permitAll()
-                .antMatchers("/api/**").hasRole("USER")
-                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
+                .anyRequest().permitAll()
+//                .antMatchers("/api/login", "/api/signup").permitAll()
+//                .antMatchers("/api/board/likedList", "/api/board/viewedList", "/api/board/commentedList", "/api/board/list", "/api/board/si").permitAll()
+//                .antMatchers("/api/**").hasRole("USER")
+//                .antMatchers(HttpMethod.GET, "/exception/**").permitAll()
                 .and()
                 .exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 .and()
@@ -61,6 +62,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/static/**", "/", "/error");
+        web.ignoring().antMatchers("/static/**", "/", "/error", "/home/ubuntu/qnaprj/**");
     }
 }
