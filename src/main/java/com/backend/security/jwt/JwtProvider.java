@@ -60,6 +60,7 @@ public class JwtProvider {
 	}
 	
 	public boolean validateToken(String token) {
-		return token == null ? false : JWT.decode(token).getExpiresAt().after(new Date());
+		log.debug("!!!!!!{}!!!!!!", token);
+		return (token == null || token == "") ? false : JWT.decode(token).getExpiresAt().after(new Date());
 	}
 }
