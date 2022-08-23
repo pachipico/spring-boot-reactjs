@@ -20,10 +20,10 @@ import net.coobird.thumbnailator.Thumbnails;
 public class ProfileImgHandler {
 
 
-	private final String PROFILE_UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
-//	private final String PROFILE_UP_DIR = "/home/ubuntu/qnaprj/frontend/build/profileImg";
-	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/img";
-//	private final String UP_DIR = "/home/ubuntu/qnaprj/frontend/build/img";
+//	private final String PROFILE_UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/profileImg";
+	private final String PROFILE_UP_DIR = "/home/ubuntu/qnaprj/frontend/build/profileImg";
+//	private final String UP_DIR = "/Users/jhs/Desktop/ezenSpring/spring_boot/springBackend/frontend/public/img";
+	private final String UP_DIR = "/home/ubuntu/qnaprj/frontend/build/img";
 	
 	public String uploadProfile(MultipartFile file) {
 
